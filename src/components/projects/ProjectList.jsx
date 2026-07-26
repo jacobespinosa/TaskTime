@@ -101,6 +101,7 @@ function ProjectList({projects, setProjects, setTasksByDate, setSessions}) {
     }
 
     const visibleProjects = sortedProjects.filter(project => {
+        if (project.id === 0) return false;
         if (filterType === "active") return !project.isArchived;
         if (filterType === "archived") return project.isArchived;
         return true;

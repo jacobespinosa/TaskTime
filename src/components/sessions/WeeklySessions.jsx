@@ -5,7 +5,7 @@ import { getWeeklyTotalTime } from '../../utils/timeUtils';
 import { formatMinutesHHMMIncludeZero } from '../../utils/timeUtils';
 
 function WeeklySessions({week, setSessions, tasksByDate, projects, timeByDate,
-                         weeklyTimeGoal
+                         weeklyTimeGoal, handleEditSession
 }) {
     const weekStartDateObj = new Date(week.weekStart);
     const weekRange = isThisWeek(weekStartDateObj) 
@@ -56,6 +56,7 @@ function WeeklySessions({week, setSessions, tasksByDate, projects, timeByDate,
                     setSessions={setSessions}
                     tasksByDate={tasksByDate}
                     projects={projects}
+                    handleEditSession={handleEditSession}
                 />
             ))}
         </div>

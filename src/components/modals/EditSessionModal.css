@@ -1,0 +1,139 @@
+.session-modal-background {
+    position: fixed;
+    inset: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: rgba(0, 0, 0, 0.4);
+}
+
+.session-modal {
+    display: flex;
+    width: 850px;
+    height: 160px;
+    background-color: var(--surface);
+    position: relative;
+    z-index: 900;
+}
+
+.project-selector-wrapper {
+    position: relative;
+}
+
+.close-btn {
+    position: absolute;
+    cursor: pointer;
+    font-size: 2.5rem;
+    right: 13px;
+    top: 1px;
+    color: var(--text-secondary);
+}
+
+.close-btn:hover {
+    color: var(--text-primary);
+}
+
+.session-modal-title {
+    width: 100%;
+    padding: 1rem;
+}
+
+.session-template {
+    display: flex;
+    gap: 2rem;
+    align-items: center;
+}
+
+.session-name-input {
+    font-family: inherit;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    padding: 1rem;
+    text-align: left;
+    font-size: 1.3rem;
+    border-left: 4px solid var(--projectColor);
+    height: 40%;
+    width: 375px;
+    margin: 0 1rem;
+    position: relative;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.session-name-input::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: color-mix(in srgb, var(--projectColor) 10%, transparent);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.25s ease;
+}
+
+.session-name-input:hover::before {
+    transform: scaleX(1);
+}
+
+.session-name-input:hover {
+    text-decoration: underline;
+}
+
+.project-dropdown-container {
+    position: absolute;
+    left: 32%;
+}
+
+.project-duration-time,
+.project-start-time,
+.project-end-time {
+    width: 100px;
+    height: 40px;
+    font-size: 1.1rem;
+    font-family: inherit;
+    text-align: center;
+    border: none;
+    padding: 0.5rem;
+}
+
+.project-duration-time:focus,
+.project-start-time:focus,
+.project-end-time:focus {
+    outline: none;
+    border: 1px solid var(--text-primary);
+}
+
+.project-duration-time:hover,
+.project-start-time:hover,
+.project-end-time:hover {
+    border: 1px solid var(--text-primary);
+    outline: none;
+}
+
+.project-duration-time {
+    font-weight: bold;
+    width: 75px;
+}
+
+.session-edit-save-btn {
+    position: absolute;
+    background-color: var(--blue);
+    border: none;
+    border-radius: 14px;
+    padding: 0.5rem 1rem;
+    color: var(--surface);
+    font-family: inherit;
+    font-size: 1rem;
+    right: 14px;
+    bottom: 10px;
+}
+
+.session-edit-save-btn:hover {
+    background-color: color-mix(in srgb, var(--blue) 80%, black);
+}
+
+.session-time-edit-container {
+    display: flex;
+    gap: 1rem;
+}

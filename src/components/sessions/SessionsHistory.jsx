@@ -4,7 +4,7 @@ import { groupSessionsByWeekAndDay } from '../../utils/sessionUtils';
 import WeeklySessions from './WeeklySessions';
 
 function SessionsHistory({sessions, setSessions, tasksByDate, projects, timeByDate,
-                          weeklyTimeGoal
+                          weeklyTimeGoal, handleEditSession
 }) {
     const groupedSessions = groupSessionsByWeekAndDay(sessions);
     return (
@@ -18,6 +18,7 @@ function SessionsHistory({sessions, setSessions, tasksByDate, projects, timeByDa
                     projects={projects}
                     timeByDate={timeByDate}
                     weeklyTimeGoal={weeklyTimeGoal}
+                    handleEditSession={handleEditSession}
                 />
             ))}
         </div>

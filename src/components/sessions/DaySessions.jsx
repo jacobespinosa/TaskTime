@@ -6,7 +6,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEllipsis, faEllipsisVertical } from '@fortawesome/free-solid-svg-icons';
 import { useState } from 'react';
 
-function DaySessions({day, setSessions, tasksByDate, projects}) {
+function DaySessions({day, setSessions, tasksByDate, projects, handleEditSession}) {
     const [openSessionMenuId, setOpenSessionMenuId] = useState(null);
 
     const today = getTodayDate();
@@ -94,7 +94,7 @@ function DaySessions({day, setSessions, tasksByDate, projects}) {
                                     {openSessionMenuId === session.id &&
                                         <div className='session-menu-dropdown'>
                                             <button type='button'
-                                                    onClick={() => console.log("edit")}
+                                                    onClick={() => handleEditSession(session)}
                                             >
                                                 Edit
                                             </button>

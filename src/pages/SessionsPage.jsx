@@ -3,7 +3,7 @@ import SessionsHistory from '../components/sessions/SessionsHistory';
 import { getSortedSessions } from '../utils/sessionUtils';
 
 function SessionsPage({sessions, setSessions, tasksByDate, projects, timeByDate,
-                       weeklyTimeGoal
+                       weeklyTimeGoal, handleEditSession
 }) {
     const sortedSessions = getSortedSessions(sessions);
     return (
@@ -20,6 +20,7 @@ function SessionsPage({sessions, setSessions, tasksByDate, projects, timeByDate,
                         projects={projects}
                         timeByDate={timeByDate}
                         weeklyTimeGoal={weeklyTimeGoal}
+                        handleEditSession={handleEditSession}
                     />
                 </div>
             </section>

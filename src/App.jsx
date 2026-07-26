@@ -9,6 +9,7 @@ import ProjectDetailsPage from "./pages/ProjectDetailsPage";
 import Layout from "./components/Layout";
 import AddTaskModal from './components/modals/AddTaskModal';
 import CreateProjectModal from './components/modals/CreateProjectModal';
+import EditSessionModal from './components/modals/EditSessionModal';
 import { useState } from 'react';
 import { faLadderWater } from '@fortawesome/free-solid-svg-icons';
 
@@ -16,8 +17,10 @@ function App() {
   const [taskModalMode, setTaskModalMode] = useState("add");
   const [isTaskModalOpen, setIsTaskModalOpen] = useState(false);
   const [selectedDateKey, setSelectedDateKey] = useState("");
+  const [selectedSession, setSelectedSession] = useState(null);
   const [newTask, setNewTask] = useState(null);
   const [isCreateProjectOpen, setIsCreateProjectOpen] = useState(false);
+  const [isSessionModalOpen, setIsSessionModalOpen] = useState(false);
   const [weeklyTimeGoal, setWeeklyTimeGoal] = useState(86400);
 
   const [projects, setProjects] = useState([
@@ -353,6 +356,11 @@ function App() {
       setIsTaskModalOpen(true);
   }
 
+  function handleEditSession(session) {
+      setSelectedSession(session);
+      setIsSessionModalOpen(true);
+  }
+
   function handleCreateProject(name, color) {
       setProjects(prevProjects => 
           [...prevProjects, {
@@ -362,6 +370,20 @@ function App() {
             timeSpent: 0,
             isArchived: false
           }]
+      )
+  }
+
+  function handleUpdateSession(session, edits) {
+      setSessions(prevSessions => 
+          prevSessions.map(prevSession =>
+              prevSession.id === session.id
+              ? 
+              {
+                  ...prevSession,
+                  ...edits
+              }
+              : prevSession
+          )          
       )
   }
 
@@ -446,6 +468,7 @@ function App() {
                                     projects={projects}
                                     timeByDate={timeByDate}
                                     weeklyTimeGoal={weeklyTimeGoal}
+                                    handleEditSession={handleEditSession}
                                 />
                            } 
                     />
@@ -473,6 +496,20 @@ function App() {
                     onClose={() => {
                         setIsCreateProjectOpen(false);
                     }}
+                />
+            )}
+
+            {isSessionModalOpen && (
+                <EditSessionModal 
+                    session={selectedSession}
+                    projects={projects}
+                    tasksByDate={tasksByDate}
+                    onClose={() => {
+                        setIsSessionModalOpen(false);
+                    }}
+                    onSave={handleUpdateSession}
+                    handleAddTask={handleAddTask}
+                    setIsCreateProjectOpen={setIsCreateProjectOpen}
                 />
             )}
         </BrowserRouter>

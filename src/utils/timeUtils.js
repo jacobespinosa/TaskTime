@@ -76,3 +76,99 @@ export function formatTime12Hour(date) {
         hour12: true
     });
 }
+
+export function convert12HourTo24Hour(timeString) {
+    const match = timeString
+        .trim()
+        .match(/^(\d{1,2}):(\d{2})\s*(AM|PM)$/i);
+
+    if (!match) {
+        return null;
+    }
+
+    let hours = Number(match[1]);
+    const minutes = Number(match[2]);
+    const period = match[3].toUpperCase();
+
+    if (
+        hours < 1 ||
+        hours > 12 ||
+        minutes < 0 ||
+        minutes > 59
+    ) {
+        return null;
+    }
+
+    if (period === "AM" && hours === 12) {
+        hours = 0;
+    } else if (period === "PM" && hours !== 12) {
+        hours += 12;
+    }
+
+    return `${String(hours).padStart(2, "0")}:${String(minutes).padStart(2, "0")}:00`;
+} 
+
+export function replaceTimestampTime(timestamp, editedTime) {
+    const formattedTime = convert12HourTo24Hour(editedTime);
+
+    if (!formattedTime) {
+        return null;
+    }
+
+    const [datePart] = timestamp.split("T");
+
+    return `${datePart}T${formattedTime}`;
+}
+
+export function convertHHMMToSeconds(timeString) {
+    const match = timeString
+            .trim()
+            .match(/^(\d{1,2}):(\d{2})$/);
+
+    if (!match) {
+        return null;
+    }
+
+    const hours = Number(match[1]);
+    const minutes = Number(match[2]);
+
+    if (minutes > 59) {
+        return null;
+    }
+
+    return (hours * 60 + minutes) * 60;
+}
+
+export function addDurationToTimestamp(startTimestamp, durationSeconds) {
+    const startDate = new Date(startTimestamp);
+    const endDate = new Date(
+        startDate.getTime() + durationSeconds * 1000
+    );
+
+    return formatTimestampLocal(endDate);
+}
+
+export function formatTimestampLocal(date) {
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, "0");
+    const day = String(date.getDate()).padStart(2, "0");
+    const hours = String(date.getHours()).padStart(2, "0");
+    const minutes = String(date.getMinutes()).padStart(2, "0");
+    const seconds = String(date.getSeconds()).padStart(2, "0");
+
+    return `${year}-${month}-${day}T${hours}:${minutes}:${seconds}`;
+}
+
+export function getDurationSeconds(startTimestamp, endTimestamp) {
+    const startDate = new Date(startTimestamp);
+    const endDate = new Date(endTimestamp);
+
+    const differenceMilliseconds =
+        endDate.getTime() - startDate.getTime();
+
+    if (differenceMilliseconds < 0) {
+        return null;
+    }
+
+    return Math.floor(differenceMilliseconds / 1000);
+}
