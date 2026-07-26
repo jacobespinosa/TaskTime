@@ -28,11 +28,35 @@
     justify-content: space-between;
     align-items: center;
     border-left: 4px solid var(--projectColor);
-    padding-left: 0.5rem;
+    padding: 0 0.5rem;
+    position: relative;
+}
+
+.recent-sessions-item:hover {
+    cursor: pointer;
+}
+
+.recent-sessions-item::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: color-mix(in srgb, var(--projectColor) 10%, transparent);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.25s ease;
+}
+
+.recent-sessions-item:hover::before {
+    transform: scaleX(1);
 }
 
 .recent-sessions-label {
     display: flex;
+    position: relative;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    width: 200px;
 }
 
 .recent-session-header {
@@ -41,4 +65,21 @@
 
 .recent-session-meta {
     color: var(--text-primary);
+}
+
+.recent-session-time-range {
+    display: grid;
+    gap: 0.5rem;
+    grid-template-columns: 1fr auto 1fr;
+    color: var(--text-primary);
+    align-items: center;
+    width: 160px;
+}
+
+.recent-session-time-range > :first-child {
+    justify-self: end;
+}
+
+.recent-session-time-range > :last-child {
+    justify-self: start;
 }

@@ -20,7 +20,8 @@ import ColumnBarChart from '../components/charts/ColumnBarChart';
 function Dashboard({projects, setProjects, tasksByDate, setTasksByDate,
                     timeByDate, setTimeByDate, taskActions, taskModalState,
                     newTask, sessions, setSessions, currentProjectId, setCurrentProjectId,
-                    isCreateProjectOpen, setIsCreateProjectOpen, weeklyTimeGoal, setWeeklyTimeGoal}) {
+                    isCreateProjectOpen, setIsCreateProjectOpen, weeklyTimeGoal, setWeeklyTimeGoal,
+                    handleEditSession}) {
 
   const {
       handleCreateTask,
@@ -146,6 +147,7 @@ function Dashboard({projects, setProjects, tasksByDate, setTasksByDate,
                   sessions={sessions}
                   projects={projects}
                   tasksByDate={tasksByDate}
+                  handleEditSession={handleEditSession}
                 />
             </div>
           </div>

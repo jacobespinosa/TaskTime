@@ -2,7 +2,7 @@ import './RecentSessions.css';
 import { getTasksArray } from '../../utils/taskUtils';
 import { formatMinutesHHMM, formatTime12Hour, formatMinutesHHMMIncludeZero } from '../../utils/timeUtils';
 
-function RecentSessions({sessions, projects, tasksByDate}) {
+function RecentSessions({sessions, projects, tasksByDate, handleEditSession}) {
     const lastFiveSessions = sessions.sort((a, b) => b.endTime.localeCompare(a.endTime)).slice(0, 5);
     const tasks = getTasksArray(tasksByDate);
 
@@ -30,12 +30,13 @@ function RecentSessions({sessions, projects, tasksByDate}) {
                                                     : "No Task • "}`;
                     const sessionLength = `${formatMinutesHHMMIncludeZero(sessionMinutes)}`;
                     const sessionMeta = `${displayProjectName}`;
-                    const sessionTimeRange = `${startTime} – ${endTime}`
 
                     return (
                         <li key={session.id}
                             className="recent-sessions-item"
-                            style={{"--projectColor": `${project.color}`}}>
+                            style={{"--projectColor": `${project.color}`}}
+                            onClick={() => handleEditSession(session)}
+                        >
                             <div className="recent-session-label">
                                 <div className="recent-session-header">
                                     {sessionHeader}
@@ -48,7 +49,9 @@ function RecentSessions({sessions, projects, tasksByDate}) {
                                 </div>
                             </div>
                             <div className="recent-session-time-range">
-                                {sessionTimeRange}
+                                <span>{startTime}</span>
+                                <span className='seperator-dash'>–</span>
+                                <span>{endTime}</span>
                             </div>
                         </li>
                     );

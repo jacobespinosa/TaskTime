@@ -186,8 +186,8 @@ function EditSessionModal({session, projects, tasksByDate, onClose, onSave, hand
                         <button type="button"
                                 title={`${editedProject?.name}${editedTask?.name ? `: ${editedTask.name}` : ""}`}
                                 style={{
-                                    "color": `${editedProject.color}`,
-                                    "--projectColor": `${editedProject.color}`
+                                    "color": `${editedProject?.color}`,
+                                    "--projectColor": `${editedProject?.color}`
                                 }}
                                 className='session-name-input'
                                 onClick={() => setIsProjectSelectorOpen(prev => !prev)}

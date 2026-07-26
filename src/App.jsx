@@ -423,6 +423,7 @@ function App() {
                                 setIsCreateProjectOpen={setIsCreateProjectOpen}
                                 weeklyTimeGoal={weeklyTimeGoal}
                                 setWeeklyTimeGoal={setWeeklyTimeGoal}
+                                handleEditSession={handleEditSession}
                             />
                         } 
                     />
