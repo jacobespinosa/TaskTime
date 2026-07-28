@@ -44,6 +44,24 @@
     background-color: color-mix(in srgb, var(--bgColor) 20%, transparent);
 }
 
+.task-list-item {
+    display: flex;
+    align-items: center;
+}
+
+.circle-check {
+    font-size: 1.2rem;
+    color: var(--text-secondary);
+    cursor: pointer;
+    background-color: transparent;
+    border: none;
+    font-family: inherit;
+}
+
+.circle-check:hover {
+    color: var(--green);
+}
+
 .task-list-item .task-text {
     display: flex;
     flex-direction: column;

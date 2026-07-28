@@ -7,6 +7,7 @@ import CalendarHeader from '../components/calendar/CalendarHeader';
 import ColumnBarChart from '../components/charts/ColumnBarChart';
 import TaskListSection from '../components/calendar/TaskListSection';
 import { getOverdueTasks, getDueSoonTasks, getTaskDueDateText } from '../utils/taskUtils';
+import { formatMinutesHHMMIncludeZero } from '../utils/timeUtils';
 
 function CalendarPage({tasksByDate, taskActions}) {
     const [ visibleWeekStart, setVisibleWeekStart ] = useState(getCurrentWeekStart());
@@ -57,6 +58,7 @@ function CalendarPage({tasksByDate, taskActions}) {
                         getValue={item => item.time}
                         getBottomLabel={item => item.day}
                         getTopLabel={item => item.numOfTasks}
+                        getHoverInfo={item => `Time: ${formatMinutesHHMMIncludeZero(item.time)}\nTasks: ${item.numOfTasks}`}
                         columnWidth={"60px"}
                         columnGap={"2rem"}
                     />
@@ -67,12 +69,14 @@ function CalendarPage({tasksByDate, taskActions}) {
                         tasks={getOverdueTasks(tasksByDate)}
                         color={"var(--red)"}
                         taskSubtext={getTaskDueDateText}
+                        handleToggleTask={handleToggleTask}
                     />
                     <TaskListSection 
                         title={"Due Soon"}
                         tasks={getDueSoonTasks(tasksByDate)}
                         color={"var(--blue)"}
                         taskSubtext={getTaskDueDateText}
+                        handleToggleTask={handleToggleTask}
                     />
                 </div>
                 <div className="week-calendar">

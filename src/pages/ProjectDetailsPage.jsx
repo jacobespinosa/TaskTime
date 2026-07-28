@@ -6,9 +6,17 @@ import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import ProjectDetails from '../components/projects/ProjectDetails';
 
-function ProjectDetailsPage({projects, setProjects, tasksByDate, handleEditTask,
-                             handleAddTask, setCurrentProjectId
+function ProjectDetailsPage({projects, setProjects, tasksByDate, taskActions, setCurrentProjectId
 }) {
+    const {
+        handleCreateTask,
+        handleDeleteTask,
+        handleToggleTask,
+        handleUpdateTask,
+        handleAddTask,
+        handleEditTask
+    } = taskActions;
+
     const { projectId } = useParams();
     const navigate = useNavigate();
 
@@ -99,6 +107,8 @@ function ProjectDetailsPage({projects, setProjects, tasksByDate, handleEditTask,
                     handleSort={handleSort}
                     handleEditTask={handleEditTask}
                     handleAddTask={handleAddTask}
+                    handleDeleteTask={handleDeleteTask}
+                    handleToggleTask={handleToggleTask}
                     setCurrentProjectId={setCurrentProjectId}
                 />
             </section>

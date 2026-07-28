@@ -73,7 +73,7 @@
 
 .task-list-top-label {
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-columns: 1fr 1fr 1fr 50px;
     padding: 1rem 2rem;
     min-height: 50px;
     background-color: var(--surface);
@@ -84,7 +84,7 @@
 .project-tasks .project-task-list-item {
     display: grid;
     align-items: center;
-    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-columns: 1fr 1fr 1fr auto;
     padding: 0.5rem 2rem;
     border-bottom: 1px solid var(--border);
     width: 100%;
@@ -140,4 +140,35 @@
     background-color: var(--shadow);
     opacity: 0.5;
     cursor: not-allowed;
+}
+
+.project-task-list-item-column .circle-check {
+    font-size: 1.1rem;
+    cursor: pointer;
+}
+
+.circle-check.complete {
+    color: var(--green);
+}
+
+.circle-check.complete:hover {
+    color: var(--text-secondary);
+}
+
+.circle-check.not-complete {
+    color: var(--text-secondary);
+}
+
+.circle-check.not-complete:hover {
+    color: var(--green);
+}
+
+.project-task-list-item-column .delete-btn {
+    font-size: 1.1rem;
+    cursor: pointer;
+    color: var(--text-secondary);
+}
+
+.project-task-list-item-column .delete-btn:hover {
+    color: var(--red);
 }

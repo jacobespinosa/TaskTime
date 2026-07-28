@@ -1,10 +1,10 @@
 import './SessionsHistory.css';
-import { getTodayDate } from '../../utils/dateUtils';
+import { getCurrentWeekStart, getDateKey, getTodayDate } from '../../utils/dateUtils';
 import { groupSessionsByWeekAndDay } from '../../utils/sessionUtils';
 import WeeklySessions from './WeeklySessions';
 
 function SessionsHistory({sessions, setSessions, tasksByDate, projects, timeByDate,
-                          weeklyTimeGoal, handleEditSession
+                          weeklyTimeGoals, handleEditSession
 }) {
     const groupedSessions = groupSessionsByWeekAndDay(sessions);
     return (
@@ -17,7 +17,7 @@ function SessionsHistory({sessions, setSessions, tasksByDate, projects, timeByDa
                     tasksByDate={tasksByDate}
                     projects={projects}
                     timeByDate={timeByDate}
-                    weeklyTimeGoal={weeklyTimeGoal}
+                    weeklyTimeGoals={weeklyTimeGoals}
                     handleEditSession={handleEditSession}
                 />
             ))}

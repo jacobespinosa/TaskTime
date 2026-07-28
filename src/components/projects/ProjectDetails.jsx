@@ -3,10 +3,13 @@ import SortableColumnHeader from '../buttons/SortableColumnHeader';
 import { formatMinutesHHMMIncludeZero } from '../../utils/timeUtils';
 import { formatISOMMDDYYYY } from '../../utils/dateUtils';
 import { getTodayDate, getDateKey } from '../../utils/dateUtils';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCircleCheck, faTrashCan } from '@fortawesome/free-regular-svg-icons';
 
 function ProjectDetails({project, tasks, handleProjectNameChange,
                          handleProjectColorChange, sortConfig, handleSort,
-                         handleEditTask, handleAddTask, setCurrentProjectId}) {
+                         handleEditTask, handleAddTask, handleDeleteTask, 
+                         handleToggleTask, setCurrentProjectId}) {
     setCurrentProjectId(project.id);
     const todayDateKey = getDateKey(getTodayDate());
     const sortedTasks = tasks.toSorted((a, b) => {
@@ -118,6 +121,23 @@ function ProjectDetails({project, tasks, handleProjectNameChange,
                                     <span className='task-due-date'>
                                         {formatISOMMDDYYYY(task.dueDate)}
                                     </span>
+                                </div>
+                                <div className='project-task-list-item-column'>
+                                    <button type="button" className={`circle-check ${task.isDone? "complete" : "not-complete"}`}
+                                            onClick={(e) => {
+                                                e.stopPropagation();
+                                                handleToggleTask(task.dateKey, task.id);
+                                            }}>
+                                        <FontAwesomeIcon icon={faCircleCheck} />
+                                    </button>
+                                    <button type="button" className='delete-btn'
+                                            onClick={(e) => {
+                                                e.stopPropagation();
+                                                handleDeleteTask(task.dateKey, task.id)
+                                            }}>
+                                        <FontAwesomeIcon icon={faTrashCan} />
+                                    </button>
+
                                 </div>
                             </li>
                         );

@@ -9,8 +9,8 @@ import { getTextColor } from '../../utils/projectUtils';
 import { useState } from 'react';
 
 function TodayTaskList({tasksByDate, handleAddTask, handleEditTask, handleDeleteTask, 
-                        handleToggleTask, projects, setIsRunning, setCurrentProjectId,
-                        setSelectedTask
+                        handleToggleTask, handleUpdateTask, timer, setTimer, 
+                        projects, setCurrentProjectId, setSelectedTask
 }) {
     const [isCompletedTasksOpen, setIsCompletedTasksOpen] = useState(false);
 
@@ -91,12 +91,7 @@ function TodayTaskList({tasksByDate, handleAddTask, handleEditTask, handleDelete
                                         </span>
                                     )}
                                 </span>
-                                <div className="start-project-container"
-                                     onClick={() => {
-                                        setCurrentProjectId(task.projectId);
-                                        setSelectedTask(task);
-                                        setIsRunning(true);
-                                     }}>
+                                <div className="start-project-container">
                                     {project.id !== 0 && 
                                         <span
                                             style={{
@@ -110,7 +105,19 @@ function TodayTaskList({tasksByDate, handleAddTask, handleEditTask, handleDelete
                                     <button
                                         type="button"
                                         className="project-start-btn"
+                                            onClick={() => {
+                                                setCurrentProjectId(task.projectId);
+                                                setSelectedTask(task);
 
+                                                setTimer(previous => ({
+                                                    ...previous,
+                                                    isRunning: true,
+                                                    startTime:
+                                                        previous.elapsedSeconds === 0
+                                                            ? Date.now()
+                                                            : Date.now() - previous.elapsedSeconds * 1000
+                                                }));
+                                            }}
                                     >
                                         <FontAwesomeIcon icon={faPlay} />
                                     </button>

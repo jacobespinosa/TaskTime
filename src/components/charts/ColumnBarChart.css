@@ -50,7 +50,12 @@
 .bar .progress-fill {
     width: 100%;
     background-color: var(--blue);
-    transition: height 0.3s ease;
+    transition: height 0.3s ease,
+                background-color 0.2s ease;
+}
+
+.bar .progress-fill:hover{
+    background-color: color-mix(in srgb, var(--blue) 80%, black); 
 }
 
 .column-bar-chart-grid {

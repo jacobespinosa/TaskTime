@@ -4,17 +4,20 @@ import { formatSecondsHHMMSS } from '../../utils/timeUtils';
 import DropdownSelector from './DropdownSelector';
 
 function Timer({projects, setProjects, timeByDate, setTimeByDate,
-                currentSessionSeconds, setCurrentSessionSeconds,
                 currentProjectId, setCurrentProjectId, selectedTask,
                 setSelectedTask, tasksByDate, handleAddTask,
-                setIsCreateProjectOpen, isRunning, setIsRunning, 
-                setSessions }) {
+                setIsCreateProjectOpen, setSessions, timer, setTimer }) {
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-    const [startTime, setStartTime] = useState(null);
     
     const today = new Date();
     const dateKey = today.toLocaleDateString();
     const currentProject = projects.find(p => p.id === currentProjectId);
+
+    const {
+        isRunning,
+        startTime,
+        elapsedSeconds
+    } = timer;
 
     const dropdownRef = useRef(null);
 
@@ -33,24 +36,24 @@ function Timer({projects, setProjects, timeByDate, setTimeByDate,
         }
     }, [])
 
-    useEffect(() => {
-        if (!isRunning) return;
-
-        const intervalId = setInterval(() => {
-            setCurrentSessionSeconds(prevSeconds => prevSeconds + 1);
-        }, 1000);
-
-        return () => {
-            clearInterval(intervalId);
-        }
-    }, [isRunning]);
-
     function handleClick() {
-        if (!isRunning && currentSessionSeconds === 0) {
-            setStartTime(new Date().toISOString());
+        if (!isRunning) {
+            setTimer(previous => ({
+                ...previous,
+                isRunning: true,
+                startTime:
+                    previous.elapsedSeconds === 0
+                        ? Date.now()
+                        : Date.now() - previous.elapsedSeconds * 1000
+            }));
+            return;
         }
-
-        setIsRunning(prev => !prev);
+        else {
+            setTimer(previous => ({
+                ...previous,
+                isRunning: false
+            }));
+        }
     }
 
     function handleEndSession() {
@@ -59,7 +62,7 @@ function Timer({projects, setProjects, timeByDate, setTimeByDate,
         setProjects(prevProjects => 
             prevProjects.map(project => 
                 project.id === currentProjectId
-                ? { ...project, timeSpent: project.timeSpent + currentSessionSeconds }
+                ? { ...project, timeSpent: project.timeSpent + elapsedSeconds }
                 : project
             )
         )
@@ -67,7 +70,7 @@ function Timer({projects, setProjects, timeByDate, setTimeByDate,
         setTimeByDate(prevTimeByDate => (
             {
                 ...prevTimeByDate,
-                [dateKey]: (prevTimeByDate[dateKey] ?? 0) + currentSessionSeconds 
+                [dateKey]: (prevTimeByDate[dateKey] ?? 0) + elapsedSeconds
             }
         ))
 
@@ -78,21 +81,24 @@ function Timer({projects, setProjects, timeByDate, setTimeByDate,
                     id: Date.now(),
                     projectId: currentProjectId,
                     taskId: selectedTask?.id ?? null,
-                    startTime,
+                    startTime: new Date(startTime).toISOString(),
                     endTime,
-                    durationSeconds: currentSessionSeconds,
+                    durationSeconds: elapsedSeconds,
                     date: dateKey
                 }
             ]
         ))
 
-        setIsRunning(false);
-        setCurrentSessionSeconds(0);
+        setTimer({
+            isRunning: false,
+            startTime: null,
+            elapsedSeconds: 0
+        })
     }
 
     return (
         <div className="timer">
-           <p className="time">{formatSecondsHHMMSS(currentSessionSeconds)}</p> 
+           <p className="time">{formatSecondsHHMMSS(elapsedSeconds)}</p> 
            <div className="selector-wrapper" ref={dropdownRef}>
             <div className="selector-container" style={{ "color": `${currentProject?.color}`}}
                     onClick={() => setIsDropdownOpen(prev => !prev)}>
@@ -125,7 +131,7 @@ function Timer({projects, setProjects, timeByDate, setTimeByDate,
            </div>
 
             <div className="btn-container">
-            {currentSessionSeconds > 0 && (
+            {elapsedSeconds > 0 && (
                 <>
                 <button
                     type="button"
@@ -145,7 +151,7 @@ function Timer({projects, setProjects, timeByDate, setTimeByDate,
                 </>
             )}
 
-            {currentSessionSeconds === 0 && (
+            {elapsedSeconds === 0 && (
                 <button
                 type="button"
                 className="btn start"

@@ -1,6 +1,9 @@
 import './TaskListSection.css';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCircleCheck } from '@fortawesome/free-regular-svg-icons';
+import { getTasksArray } from '../../utils/taskUtils';
 
-function TaskListSection({title, tasks, color, taskSubtext}) {
+function TaskListSection({title, tasks, color, taskSubtext, handleToggleTask}) {
     return (
         <div className='task-list-section-container'>
             <h3 className='task-list-section-header'>
@@ -27,6 +30,12 @@ function TaskListSection({title, tasks, color, taskSubtext}) {
                                     {taskSubtext && taskSubtext(task)}
                                 </span>
                             </div>
+                            <button type='button'
+                                    className='circle-check'
+                                    onClick={() => handleToggleTask(task.dateKey, task.id)}
+                            >
+                                <FontAwesomeIcon icon={faCircleCheck}/>
+                            </button>    
                         </li>
                     );
                 })}

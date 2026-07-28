@@ -1,12 +1,14 @@
 import './WeeklySessions.css';
 import DaySessions from './DaySessions';
-import { isThisWeek, isLastWeek, getCurrentWeekRange } from '../../utils/dateUtils';
+import { isThisWeek, isLastWeek, getCurrentWeekRange, getCurrentWeekStart,
+         getDateKey } from '../../utils/dateUtils';
 import { getWeeklyTotalTime } from '../../utils/timeUtils';
 import { formatMinutesHHMMIncludeZero } from '../../utils/timeUtils';
 
 function WeeklySessions({week, setSessions, tasksByDate, projects, timeByDate,
-                         weeklyTimeGoal, handleEditSession
+                         weeklyTimeGoals, handleEditSession
 }) {
+    const weeklyTimeGoal = weeklyTimeGoals[week.weekStart];
     const weekStartDateObj = new Date(week.weekStart);
     const weekRange = isThisWeek(weekStartDateObj) 
                         ? "This week"
@@ -19,6 +21,7 @@ function WeeklySessions({week, setSessions, tasksByDate, projects, timeByDate,
     );
     const weeklySessionTimeAvg = weeklySessionCount > 0 ? totalWeeklySeconds / weeklySessionCount : 0;
     const percent = weeklyTimeGoal > 0 ? Math.min((totalWeeklySeconds / weeklyTimeGoal) * 100, 100) : 0;
+
     return (
         <div className='weekly-session-container'>
             <header className='weekly-session-header'>

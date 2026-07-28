@@ -1,6 +1,6 @@
 import './Dashboard.css';
 
-import { getCurrentWeekStart } from '../utils/dateUtils';
+import { getCurrentWeekStart, getDateKey } from '../utils/dateUtils';
 import { getWeeklyTaskStats } from '../utils/taskUtils';
 import { getWeeklyTotalTime, getWeeklyTimeStats } from '../utils/timeUtils';
 import { useState } from 'react';
@@ -20,8 +20,8 @@ import ColumnBarChart from '../components/charts/ColumnBarChart';
 function Dashboard({projects, setProjects, tasksByDate, setTasksByDate,
                     timeByDate, setTimeByDate, taskActions, taskModalState,
                     newTask, sessions, setSessions, currentProjectId, setCurrentProjectId,
-                    isCreateProjectOpen, setIsCreateProjectOpen, weeklyTimeGoal, setWeeklyTimeGoal,
-                    handleEditSession}) {
+                    isCreateProjectOpen, setIsCreateProjectOpen, weeklyTimeGoals, setWeeklyTimeGoals,
+                    handleEditSession, timer, setTimer}) {
 
   const {
       handleCreateTask,
@@ -40,15 +40,19 @@ function Dashboard({projects, setProjects, tasksByDate, setTasksByDate,
   } = taskModalState
 
   const currentWeekStart = getCurrentWeekStart();
+  const lastWeekStart = new Date(currentWeekStart);
+  lastWeekStart.setDate(lastWeekStart.getDate() - 7);
 
-  const [currentSessionSeconds, setCurrentSessionSeconds] = useState(0);
+  const currentWeekStartDateKey = getDateKey(currentWeekStart);
+  const lastWeekStartDateKey = getDateKey(lastWeekStart);
+
   const [selectedTask, setSelectedTask] = useState(null);
-  const [isRunning, setIsRunning] = useState(false);
   const [isWeeklyGoalModalOpen, setIsWeeklyGoalModalOpen] = useState(false);
 
   const { totalTasks, totalTasksCompleted } = getWeeklyTaskStats(tasksByDate);
-  const totalWeeklyTime = getWeeklyTotalTime(timeByDate, currentWeekStart) + currentSessionSeconds;
-
+  const totalWeeklyTime = getWeeklyTotalTime(timeByDate, currentWeekStart) + timer.elapsedSeconds;
+  const weeklyTimeGoal = weeklyTimeGoals[currentWeekStartDateKey] ??
+                         weeklyTimeGoals[lastWeekStartDateKey] ?? 0;
 
   const weeklyTimeStats = getWeeklyTimeStats(timeByDate);
   const sortedTimeStats = weeklyTimeStats.toSorted((a, b) => b.time - a.time);
@@ -63,8 +67,6 @@ function Dashboard({projects, setProjects, tasksByDate, setTasksByDate,
             setProjects={setProjects}
             timeByDate={timeByDate}
             setTimeByDate={setTimeByDate}
-            currentSessionSeconds={currentSessionSeconds}
-            setCurrentSessionSeconds={setCurrentSessionSeconds}
             currentProjectId={currentProjectId}
             setCurrentProjectId={setCurrentProjectId}
             selectedTask={selectedTask}
@@ -72,9 +74,9 @@ function Dashboard({projects, setProjects, tasksByDate, setTasksByDate,
             tasksByDate={tasksByDate}
             handleAddTask={handleAddTask}
             setIsCreateProjectOpen={setIsCreateProjectOpen}
-            isRunning={isRunning}
-            setIsRunning={setIsRunning}
             setSessions={setSessions}
+            timer={timer}
+            setTimer={setTimer}
           />
 
           <div className="dashboard-graphs">
@@ -97,14 +99,6 @@ function Dashboard({projects, setProjects, tasksByDate, setTasksByDate,
               />
             </div>
 
-            <div className="project-time-breakdown">
-              <ProjectTimeBreakdown
-                  projects={projects}
-                  timeByDate={timeByDate}
-                  sessions={sessions}
-              />
-            </div>
-
             <div className="weekly-focus-chart">
               <ColumnBarChart 
                   title={"Weekly Focus Chart"}
@@ -114,8 +108,9 @@ function Dashboard({projects, setProjects, tasksByDate, setTasksByDate,
                   getValue={item => item.time}
                   getBottomLabel={item => item.day}
                   getTopLabel={item => item.timeDisplay}
-                  columnWidth={"50px"}
-                  columnGap={"1.5rem"}
+                  getHoverInfo={item => `Time: ${item.timeDisplay}`}
+                  columnWidth={"60px"}
+                  columnGap={"2rem"}
               />
             </div>
           </div>
@@ -137,7 +132,8 @@ function Dashboard({projects, setProjects, tasksByDate, setTasksByDate,
                 handleDeleteTask={handleDeleteTask}
                 handleToggleTask={handleToggleTask}
                 handleUpdateTask={handleUpdateTask}
-                setIsRunning={setIsRunning}
+                timer={timer}
+                setTimer={setTimer}
                 setCurrentProjectId={setCurrentProjectId}
                 setSelectedTask={setSelectedTask}
               />
@@ -153,10 +149,16 @@ function Dashboard({projects, setProjects, tasksByDate, setTasksByDate,
           </div>
         </section>
 
-
       {isWeeklyGoalModalOpen && (
           <SetWeeklyGoalModal 
-              onSubmit={(goal) => setWeeklyTimeGoal(goal)}
+              onSubmit={(goal) => {
+                  setWeeklyTimeGoals(prevGoals => ({
+                      ...prevGoals,
+                      [currentWeekStartDateKey]: goal
+                  }));
+
+                  setIsWeeklyGoalModalOpen(false);
+              }}
               onClose={() => {
                 setIsWeeklyGoalModalOpen(false);
               }}

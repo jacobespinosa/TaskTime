@@ -2,7 +2,8 @@ import { formatMinutesHHMMIncludeZero } from "../../utils/timeUtils";
 import './ColumnBarChart.css';
 
 function ColumnBarChart({title, data, maxValue, getKey, getValue, 
-                         getBottomLabel, getTopLabel, columnWidth, columnGap}) {
+                         getBottomLabel, getTopLabel, getHoverInfo,
+                         columnWidth, columnGap}) {
     const hourMarkers = Array.from({length: maxValue / 60}, (_, index) => {
         return (index + 1) * 60;
     })
@@ -43,7 +44,8 @@ function ColumnBarChart({title, data, maxValue, getKey, getValue,
                                     </div>
                                 )}
                                 <div className="progress-fill" 
-                                        style={{"height": `${percent}%`}}></div>
+                                     style={{"height": `${percent}%`}}
+                                     title={getHoverInfo(item)}></div>
                             </div>
                             <div className="bar-chart-label">
                                 {getBottomLabel(item)}

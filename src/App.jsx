@@ -12,6 +12,7 @@ import CreateProjectModal from './components/modals/CreateProjectModal';
 import EditSessionModal from './components/modals/EditSessionModal';
 import { useState } from 'react';
 import { faLadderWater } from '@fortawesome/free-solid-svg-icons';
+import { useEffect } from 'react';
 
 function App() {
   const [taskModalMode, setTaskModalMode] = useState("add");
@@ -21,7 +22,11 @@ function App() {
   const [newTask, setNewTask] = useState(null);
   const [isCreateProjectOpen, setIsCreateProjectOpen] = useState(false);
   const [isSessionModalOpen, setIsSessionModalOpen] = useState(false);
-  const [weeklyTimeGoal, setWeeklyTimeGoal] = useState(86400);
+  const [timer, setTimer] = useState({
+    isRunning: false,
+    startTime: null,
+    elapsedSeconds: 0,
+});
 
   const [projects, setProjects] = useState([
     {
@@ -56,25 +61,37 @@ function App() {
   const [currentProjectId, setCurrentProjectId] = useState(projects[0].id);
 
     const [timeByDate, setTimeByDate] = useState({
-        "7/12/2026": 3600,
-        "7/13/2026": 10000,   
-        "7/14/2026": 12000,  
-        "7/15/2026": 2000,  
-        "7/16/2026": 9000,  
-        "7/17/2026": 7200, 
-        "7/18/2026": 6000, 
-        "7/19/2026": 10000  
+        "7/20/2026": 10000,   
+        "7/21/2026": 12000,  
+        "7/22/2026": 2000,  
+        "7/23/2026": 9000,  
+        "7/24/2026": 7200, 
+        "7/25/2026": 6000, 
+        "7/26/2026": 3600,
+        "7/27/2026": 3600,
+        "7/28/2026": 10000,   
+        "7/29/2026": 12000,  
+        "7/30/2026": 2000,  
+        "7/31/2026": 9000,  
+        "8/1/2026": 7200, 
+        "8/2/2026": 6000, 
     });
 
+    const [weeklyTimeGoals, setWeeklyTimeGoals] = useState({
+        "7/13/2026": 86400,
+        "7/20/2026": 86400,
+        "7/27/2026": 86400,
+    })
+
   const [ tasksByDate, setTasksByDate ] = useState({
-      "7/13/2026": [
+      "7/27/2026": [
           {
               id: 1,
               name: "Study React",
               projectId: 0,
               time: 90,
               isDone: false,
-              dueDate: "2026-07-13"
+              dueDate: "2026-07-27"
           },
           {
               id: 2,
@@ -82,18 +99,18 @@ function App() {
               projectId: 1,
               time: 60,
               isDone: false,
-              dueDate: "2026-07-13"
+              dueDate: "2026-07-27"
           }
       ],
 
-      "7/14/2026": [
+      "7/28/2026": [
           {
               id: 3,
               name: "Work on Dashboard",
               projectId: 1,
               time: 120,
               isDone: true,
-              dueDate: "2026-07-15"
+              dueDate: "2026-07-28"
           },
           {
               id: 4,
@@ -101,7 +118,7 @@ function App() {
               projectId: 3,
               time: 45,
               isDone: true,
-              dueDate: "2026-07-13"
+              dueDate: "2026-07-28"
           },
           {
               id: 5,
@@ -109,29 +126,29 @@ function App() {
               projectId: 0,
               time: 60,
               isDone: false,
-              dueDate: "2026-07-15"
+              dueDate: "2026-07-28"
           }
       ],
 
-      "7/15/2026": [
+      "7/29/2026": [
           {
               id: 6,
               name: "Weekly Quiz",
               projectId: 0,
               time: 30,
               isDone: false,
-              dueDate: "2026-07-15"
+              dueDate: "2026-07-29"
           }
       ],
 
-      "7/16/2026": [
+      "7/30/2026": [
           {
               id: 7,
               name: "Portfolio Improvements",
               projectId: 1,
               time: 120,
               isDone: false,
-              dueDate: "2026-07-15"
+              dueDate: "2026-07-30"
           },
           {
               id: 8,
@@ -139,18 +156,18 @@ function App() {
               projectId: 3,
               time: 60,
               isDone: true,
-              dueDate: "2026-07-15"
+              dueDate: "2026-07-30"
           }
       ],
 
-      "7/17/2026": [
+      "7/31/2026": [
           {
               id: 9,
               name: "Read Documentation",
               projectId: 2,
               time: 45,
               isDone: true,
-              dueDate: "2026-07-18"
+              dueDate: "2026-07-31"
           },
           {
               id: 10,
@@ -158,18 +175,18 @@ function App() {
               projectId: 2,
               time: 90,
               isDone: false,
-              dueDate: "2026-07-18"
+              dueDate: "2026-07-31"
           }
       ],
 
-      "7/18/2026": [
+      "8/1/2026": [
           {
               id: 11,
               name: "Fix Timer Bugs",
               projectId: 1,
               time: 75,
               isDone: false,
-              dueDate: "2026-07-19"
+              dueDate: "2026-07-01"
           },
           {
               id: 12,
@@ -177,7 +194,7 @@ function App() {
               projectId: 3,
               time: 60,
               isDone: true,
-              dueDate: "2026-07-19"
+              dueDate: "2026-07-01"
           },
           {
               id: 13,
@@ -185,18 +202,18 @@ function App() {
               projectId: 0,
               time: 30,
               isDone: true,
-              dueDate: "2026-07-19"
+              dueDate: "2026-07-01"
           }
       ],
 
-      "7/19/2026": [
+      "8/2/2026": [
           {
               id: 14,
               name: "Plan Next Week",
               projectId: 0,
               time: 30,
               isDone: true,
-              dueDate: "2026-06-20",
+              dueDate: "2026-06-02",
           },
           {
               id: 15,
@@ -204,7 +221,7 @@ function App() {
               projectId: 1,
               time: 90,
               isDone: true,
-              dueDate: "2026-06-20"
+              dueDate: "2026-06-02"
           }
       ]
   });
@@ -214,44 +231,44 @@ function App() {
             id: 1,
             projectId: 1,
             taskId: 3, // Work on Dashboard
-            startTime: "2026-07-13T09:00:00",
-            endTime: "2026-07-13T11:00:00",
+            startTime: "2026-07-27T09:00:00",
+            endTime: "2026-07-27T11:00:00",
             durationSeconds: 7200,
-            date: "7/13/2026"
+            date: "7/27/2026"
         },
         {
             id: 2,
             projectId: 3,
             taskId: 4, // Linux+ Study
-            startTime: "2026-07-07T11:30:00",
-            endTime: "2026-07-07T12:15:00",
+            startTime: "2026-07-25T11:30:00",
+            endTime: "2026-07-25T12:15:00",
             durationSeconds: 2700,
-            date: "7/13/2026"
+            date: "7/25/2026"
         },
         {
             id: 3,
             projectId: 2,
             taskId: null, // Gym
-            startTime: "2026-07-07T18:00:00",
-            endTime: "2026-07-07T19:00:00",
+            startTime: "2026-07-25T18:00:00",
+            endTime: "2026-07-25T19:00:00",
             durationSeconds: 3600,
-            date: "7/13/2026"
+            date: "7/25/2026"
         },
         {
             id: 4,
             projectId: 0,
             taskId: 6, // Weekly Quiz
-            startTime: "2026-07-08T08:30:00",
-            endTime: "2026-07-08T09:00:00",
+            startTime: "2026-07-26T09:00:00",
+            endTime: "2026-07-26T09:30:00",
             durationSeconds: 1800,
-            date: "7/14/2026"
+            date: "7/26/2026"
         },
         {
             id: 5,
             projectId: 1,
             taskId: 3, // Work on Dashboard
-            startTime: "2026-07-08T10:00:00",
-            endTime: "2026-07-08T12:00:00",
+            startTime: "2026-07-26T10:00:00",
+            endTime: "2026-07-26T12:00:00",
             durationSeconds: 7200,
             date: "7/14/2026"
         },
@@ -259,21 +276,40 @@ function App() {
             id: 6,
             projectId: 3,
             taskId: 4, // Linux+ Study
-            startTime: "2026-07-08T13:15:00",
-            endTime: "2026-07-08T14:00:00",
+            startTime: "2026-07-26T13:15:00",
+            endTime: "2026-07-26T14:00:00",
             durationSeconds: 2700,
-            date: "7/14/2026"
+            date: "7/26/2026"
         },
         {
             id: 7,
             projectId: 0,
             taskId: 5, // Gym
-            startTime: "2026-07-08T17:30:00",
-            endTime: "2026-07-08T18:30:00",
+            startTime: "2026-07-26T17:30:00",
+            endTime: "2026-07-26T18:30:00",
             durationSeconds: 3600,
-            date: "7/14/2026"
+            date: "7/26/2026"
         },
     ])
+
+    useEffect(() => {
+        if (!timer.isRunning || !timer.startTime) return;
+
+        const updateElapsedTime = () => {
+            setTimer(previous => ({
+                ...previous,
+                elapsedSeconds: Math.floor(
+                    (Date.now() - previous.startTime) / 1000
+                )
+            }));
+        };
+
+        updateElapsedTime();
+
+        const intervalId = setInterval(updateElapsedTime, 1000);
+
+        return () => clearInterval(intervalId);
+    }, [timer.isRunning, timer.startTime]);
 
   function handleCreateTask(taskName, projectId, estimatedTime, dueDate) {
       setTasksByDate(prev => ({
@@ -421,9 +457,10 @@ function App() {
                                 setCurrentProjectId={setCurrentProjectId}
                                 isCreateProjectOpen={isCreateProjectOpen}
                                 setIsCreateProjectOpen={setIsCreateProjectOpen}
-                                weeklyTimeGoal={weeklyTimeGoal}
-                                setWeeklyTimeGoal={setWeeklyTimeGoal}
+                                weeklyTimeGoals={weeklyTimeGoals}
+                                setWeeklyTimeGoals={setWeeklyTimeGoals}
                                 handleEditSession={handleEditSession}
+                                timer={timer} setTimer={setTimer}
                             />
                         } 
                     />
@@ -454,9 +491,9 @@ function App() {
                                     projects={projects}
                                     setProjects={setProjects}
                                     tasksByDate={tasksByDate}
-                                    handleEditTask={handleEditTask}
-                                    handleAddTask={handleAddTask}
+                                    taskActions={taskActions}
                                     setCurrentProjectId={setCurrentProjectId}
+                                    
                                 />
                             } 
                     />
@@ -468,7 +505,7 @@ function App() {
                                     tasksByDate={tasksByDate}
                                     projects={projects}
                                     timeByDate={timeByDate}
-                                    weeklyTimeGoal={weeklyTimeGoal}
+                                    weeklyTimeGoals={weeklyTimeGoals}
                                     handleEditSession={handleEditSession}
                                 />
                            } 

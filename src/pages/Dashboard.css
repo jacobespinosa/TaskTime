@@ -24,7 +24,7 @@
     grid-template-rows: 1.2fr 1fr;
     grid-template-areas:
         'totalTimeRing totalTasksRing'
-        'projectTimeBreakdown weeklyFocusChart';
+        'weeklyFocusChart weeklyFocusChart';
 }
 
 .timer {
@@ -56,10 +56,6 @@
 
 .total-weekly-time-ring {
     grid-area: totalTimeRing;
-}
-
-.project-time-breakdown {
-    grid-area: projectTimeBreakdown;
 }
 
 .weekly-focus-chart {
