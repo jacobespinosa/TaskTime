@@ -510,7 +510,16 @@ function App() {
                                 />
                            } 
                     />
-                    <Route path="/analytics" element={<AnalyticsPage />} />
+                    <Route path="/analytics" 
+                           element={
+                                <AnalyticsPage 
+                                    timeByDate={timeByDate}
+                                    weeklyTimeGoals={weeklyTimeGoals}
+                                    setWeeklyTimeGoals={setWeeklyTimeGoals}
+                                    tasksByDate={tasksByDate}
+                                />
+                            } 
+                    />
                 </Route>
             </Routes>
             {isTaskModalOpen && (

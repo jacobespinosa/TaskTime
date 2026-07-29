@@ -1,0 +1,5 @@
+.summary-card {
+    border: 1px solid var(--border);
+    width: 100px;
+    height: 75px;
+}

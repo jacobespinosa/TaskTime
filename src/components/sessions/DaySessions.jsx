@@ -4,7 +4,7 @@ import { formatMinutesHHMMIncludeZero, formatTime12Hour } from '../../utils/time
 import { getTasksArray } from '../../utils/taskUtils';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEllipsis, faEllipsisVertical } from '@fortawesome/free-solid-svg-icons';
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 
 function DaySessions({day, setSessions, tasksByDate, projects, handleEditSession}) {
     const [openSessionMenuId, setOpenSessionMenuId] = useState(null);
@@ -28,6 +28,22 @@ function DaySessions({day, setSessions, tasksByDate, projects, handleEditSession
                         : day.dateKey === yesterdayDateKey
                         ? "Yesterday"
                         : `${dayOfWeek}, ${month} ${dayOfMonth}${getDaySuffix(dayOfMonth)}`;
+
+    const dropdownRef = useRef(null);
+    useEffect(() => {
+        const isClickOutside = (event) => {
+            if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+                setOpenSessionMenuId(null);
+            }
+            return;
+        }
+
+        document.addEventListener("click", isClickOutside);
+
+        return () => {
+            document.removeEventListener("click", isClickOutside);
+        }
+    }, [])
 
     function handleDeleteSession(sessionId) {
         setSessions(prevSessions => 
@@ -83,18 +99,25 @@ function DaySessions({day, setSessions, tasksByDate, projects, handleEditSession
                                     {sessionLength}
                                 </div>
                                 <div className='divider-vertical'></div>
-                                <button type='button'
-                                        className='day-session-menu'
-                                        onClick={() => setOpenSessionMenuId(
-                                            openSessionMenuId === session.id
-                                            ? null : session.id
-                                        )}
-                                >
-                                    <FontAwesomeIcon icon={faEllipsisVertical} />
+                                <div className='day-session-menu-container'
+                                     ref={openSessionMenuId === session.id ? dropdownRef : null}>
+                                    <button type='button'
+                                            className='day-session-menu'
+                                                    onClick={() =>
+                                                        setOpenSessionMenuId(currentId =>
+                                                            currentId === session.id ? null : session.id
+                                                    )}
+                                    >
+                                        <FontAwesomeIcon icon={faEllipsisVertical} />
+                                    </button>
                                     {openSessionMenuId === session.id &&
                                         <div className='session-menu-dropdown'>
                                             <button type='button'
-                                                    onClick={() => handleEditSession(session)}
+                                                    onClick={ () => {
+                                                        handleEditSession(session);
+                                                        setOpenSessionMenuId(null);
+                                                    }}
+
                                             >
                                                 Edit
                                             </button>
@@ -105,7 +128,7 @@ function DaySessions({day, setSessions, tasksByDate, projects, handleEditSession
                                             </button>
                                         </div>
                                     }
-                                </button>
+                                </div>
                             </div>
                         </li>
                     );

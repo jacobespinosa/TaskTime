@@ -1,5 +1,5 @@
 import './ProjectList.css';
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { formatMinutesHHMMIncludeZero } from '../../utils/timeUtils';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -34,6 +34,23 @@ function ProjectList({projects, setProjects, setTasksByDate, setSessions}) {
                     ? comparison
                     : -comparison;
     })
+
+    const dropdownRef = useRef(null);
+
+    useEffect(() => {
+        const isClickOutside = (event) => {
+            if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+                setIsFilterDropdownOpen(false);
+            }
+            return;
+        }
+
+        document.addEventListener("click", isClickOutside);
+
+        return () => {
+            document.removeEventListener("click", isClickOutside);
+        }
+    }, [])
 
     function handleSelectProject(projectId) {
         navigate(`/projects/${projectId}`);
@@ -127,7 +144,9 @@ function ProjectList({projects, setProjects, setTasksByDate, setSessions}) {
                 />
 
                 <button type="button" className='project-list-filter-btn'
-                        onClick={() => setIsFilterDropdownOpen(prev => !prev)}>
+                        onClick={() => setIsFilterDropdownOpen(prev => !prev)}
+                        ref={dropdownRef}
+                >
                     Filter
                     {isFilterDropdownOpen 
                         ? <FontAwesomeIcon icon={faChevronUp} className='chevron-up' />

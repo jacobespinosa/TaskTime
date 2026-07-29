@@ -1,0 +1,25 @@
+.summary-card-container {
+    background-color: var(--surface);
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    padding: 1rem;
+    width: fit-content;
+    box-shadow: 1px 1px 8px var(--shadow);
+}
+
+.date-range-filter-btn {
+    font-size: inherit;
+    font-family: inherit;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    display: inline-flex;
+    gap: 0.2rem;
+    color: var(--blue);
+}
+
+.summary-cards {
+    display: flex;
+    gap: 0.5rem;
+}

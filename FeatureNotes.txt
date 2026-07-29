@@ -107,3 +107,119 @@ SessionsPage
 │   │   └── SessionDay
 │   └── WeeklySessions
 └── SessionFilters
+
+ANALYTICS:
+
+ - Allow switching between weekly and monthly time trends
+    - Focus Time
+    - Task Completion
+    - Project Time
+
+- Summary Cards
+ - Average Daily Focus
+ - Task completion rate
+ - Total Focus Time
+
+ - Streaks
+      - Days with every task completed. Finishing everything you planned (Execution)
+      - Days reaching a daily focus goal. Spending enough focused time (consistency)
+      - Longest Streak (Personal Record)
+
+Project Consistency
+
+[LeetCode ▼]  [July 2026 ‹ ›]
+
+18 active days
+58% consistency
+Longest streak: 6 days
+
+Binary calendar: active or inactive
+
+
+ 
+ Activity Heatmap
+
+[All Projects ▼]  [Focus Time | Tasks Completed]
+
+Shows quantity through color intensity.
+
+ - weekly goal progress
+
+Goal
+
+███████████░░░░░░
+
+21h / 30h
+
+70%
+
+below:
+Past 8 Weeks
+100%
+82%
+94%
+71%
+65%
+101%
+89%
+76%
+
+ - Project breakdown
+
+ Analytics
+
+[ This Month ▼ ]
+┌────────────┐ ┌────────────┐ ┌────────────┐ ┌────────────┐
+│ 42h 18m    │ │ 2h 32m     │ │ 74%  Time  │ │ 86% Task   │
+│ Focus Time │ │ Daily Avg  │ │ Goal Rate  │ │ Completion │
+└────────────┘ └────────────┘ └────────────┘ └────────────┘
+
+Focus Time Trend              Daily | Weekly | Monthly
+┌──────────────────────────────────────────────┐
+│ Focus Time Trend                             │
+│ [Daily] [Weekly] [Monthly]                   │
+│                                              │
+│               Main line/bar chart            │
+│                                              │
+└──────────────────────────────────────────────┘
+Daily(the week) Weekly(the month) monthly(the year)
+
+┌──────────────────────────┐ ┌──────────────────────────┐
+│ Project Breakdown        │ │ Goal Progress            │
+│                          │ │                          │
+│ Horizontal bars/donut    │ │ Current goal             │
+│                          │ │ Past weeks comparison    │
+└──────────────────────────┘ └──────────────────────────┘
+
+
+┌──────────────────────────────────────────────┐
+│ Activity Heatmap                             │
+│ [All Projects ▼] [Focus Time | Tasks]        │
+│                                              │
+│ GitHub-style yearly or multi-month heatmap   │
+└──────────────────────────────────────────────┘
+
+
+┌──────────────────────────────────────────────┐
+│ Project Consistency                          │
+│ [LeetCode ▼]       [‹ July 2026 ›]           │
+│                                              │
+│        Monthly binary calendar               │
+│        completed / not completed              │
+│                                              │
+│ 18 active days   58% consistency   6-day max │
+└──────────────────────────────────────────────┘
+
+
+┌──────────────────────────┐ ┌──────────────────────────┐
+│ Peak Focus Hours         │ │ Session Statistics       │
+│                          │ │ Avg session: 46m         │
+│ Hour-of-day bars         │ │ Longest: 2h 14m          │
+│                          │ │ Sessions/day: 3.1        │
+└──────────────────────────┘ └──────────────────────────┘
+
+
+┌──────────────────────────────────────────────┐
+│ Project Comparison                           │
+│ Project | Time | Tasks | Sessions | Avg      │
+└──────────────────────────────────────────────┘

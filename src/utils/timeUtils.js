@@ -1,4 +1,4 @@
-import { getCurrentWeekStart } from "./dateUtils";
+import { getCurrentWeekStart, getDateKey, getTodayDate } from "./dateUtils";
 
 export function formatMinutesHHMM(minutes) {
     const hours = Math.floor(minutes / 60);
@@ -37,6 +37,48 @@ export function getWeeklyTotalTime(timeByDate, weekStart) {
 
     for (let i = 0; i < 7; i++) {
         let dateKey = currentDate.toLocaleDateString('en-US');
+
+        totalTime += timeByDate[dateKey] ?? 0;
+
+        currentDate.setDate(currentDate.getDate() + 1);
+    }
+    return totalTime;
+}
+
+export function getMonthlyTotalTime(timeByDate, monthStart) {
+    const today = getTodayDate();
+    const currentDate = new Date(monthStart);
+    const monthEnd = new Date(
+        currentDate.getFullYear(),
+        currentDate.getMonth() + 1,
+        0
+    );
+    const endDate = monthEnd < today ? monthEnd : today;
+
+    let totalTime = 0;
+    while (currentDate <= endDate) {
+        let dateKey = getDateKey(currentDate);
+
+        totalTime += timeByDate[dateKey] ?? 0;
+
+        currentDate.setDate(currentDate.getDate() + 1);
+    }
+    return totalTime;
+}
+
+export function getYearlyTotalTime(timeByDate, yearStart) {
+    const today = getTodayDate();
+    const currentDate = new Date(yearStart);
+    const yearEnd = new Date(
+        currentDate.getFullYear() + 1,
+        0,
+        0
+    )
+    const endDate = yearEnd < today ? yearEnd : today;
+
+    let totalTime = 0;
+    while (currentDate <= endDate) {
+        let dateKey = getDateKey(currentDate);
 
         totalTime += timeByDate[dateKey] ?? 0;
 

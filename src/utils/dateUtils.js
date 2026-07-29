@@ -112,3 +112,24 @@ export function getYesterdayDate() {
     yesterday.setDate(yesterday.getDate() - 1);
     return yesterday;
 }
+
+export function getCurrentMonthStart() {
+    const today = getTodayDate();
+    return new Date(today.getFullYear(), today.getMonth(), 1);
+}
+
+export function getCurrentYearStart() {
+    const today = getTodayDate();
+    return new Date(today.getFullYear(), 0, 1);
+}
+
+export function getDaysElapsed(startDate) {
+    const today = getTodayDate();
+    const start = new Date(startDate);
+
+    start.setHours(0, 0, 0, 0);
+
+    const millisecondsPerDay = 1000 * 60 * 60 * 24;
+
+    return Math.floor((today - start) / millisecondsPerDay) + 1;
+}
