@@ -1,0 +1,7 @@
+.progress-bar-container {
+    border: 1px solid var(--border);
+}
+
+.progress-bar-container .fill {
+    height: 100%;
+}

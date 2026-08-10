@@ -2,12 +2,14 @@ import './ProjectTimeBreakdown.css';
 import { getWeeklyProjectStats } from '../../utils/projectUtils';
 import { formatMinutesHHMMIncludeZero, getWeeklyTotalTime } from '../../utils/timeUtils';
 
-function ProjectTimeBreakdown({ projects, timeByDate, sessions }) {
+function ProjectTimeBreakdown({ projects, sessions }) {
     const projectStats = getWeeklyProjectStats(projects, sessions);
     let sortedProjectStats = projectStats.toSorted((a, b) => b.time - a.time);
     const mostTimeSpent = sortedProjectStats[0]?.time ?? 0;
-    const totalWeeklyTime = getWeeklyTotalTime(timeByDate) / 60;
-
+    const totalWeeklyTime = sortedProjectStats.reduce(
+        (total, { time }) => total + time,
+        0
+    );
     if (sortedProjectStats.length > 6) {
         const extraProjects = sortedProjectStats.slice(5);
         const totalExtraProjectTime = extraProjects.reduce((totalTime, project) => {
@@ -31,9 +33,6 @@ function ProjectTimeBreakdown({ projects, timeByDate, sessions }) {
 
     return (
         <div className="project-weekly-breakdown-container">
-            <h3 className="project-weekly-breakdown-title">
-                Project Weekly Breakdown
-            </h3>
             <ul className="project-weekly-breakdown-list">
                 {sortedProjectStats.map(({project, time}) => {
                     const percent = Math.min((time / mostTimeSpent) * 100, 100);

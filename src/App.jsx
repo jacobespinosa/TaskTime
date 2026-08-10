@@ -13,6 +13,8 @@ import EditSessionModal from './components/modals/EditSessionModal';
 import { useState } from 'react';
 import { faLadderWater } from '@fortawesome/free-solid-svg-icons';
 import { useEffect } from 'react';
+import { generateTestTimeData } from './utils/statsUtils';
+import { getDateKey, getTodayDate } from './utils/dateUtils';
 
 function App() {
   const [taskModalMode, setTaskModalMode] = useState("add");
@@ -34,53 +36,57 @@ function App() {
       name: "No Project",
       color: "#333",
       timeSpent: 11763,
-      isArchived: false
+      isArchived: false,
+      progressTracking: null
+
     },
     {
       id: 1,
       name: "leetCode",
       color: "#FF8849",
       timeSpent: 21674,
-      isArchived: true
+      isArchived: true,
+      progressTracking: {
+            isEnabled: true,
+            currentValue: 42,
+            goalValue: 200,
+            unit: "problems"
+        }
     },
     {
       id: 2,
       name: "Python",
       color: "#69BE28",
       timeSpent: 16223,
-      isArchived: false
+      isArchived: false,
+      progressTracking: null
     },
     {
       id: 3,
       name: "SIEM",
       color: "#3DB7E4",
       timeSpent: 36902,
-      isArchived: false
+      isArchived: false,
+      progressTracking: null
     }
   ]);
   const [currentProjectId, setCurrentProjectId] = useState(projects[0].id);
 
-    const [timeByDate, setTimeByDate] = useState({
-        "7/20/2026": 10000,   
-        "7/21/2026": 12000,  
-        "7/22/2026": 2000,  
-        "7/23/2026": 9000,  
-        "7/24/2026": 7200, 
-        "7/25/2026": 6000, 
-        "7/26/2026": 3600,
-        "7/27/2026": 3600,
-        "7/28/2026": 10000,   
-        "7/29/2026": 12000,  
-        "7/30/2026": 2000,  
-        "7/31/2026": 9000,  
-        "8/1/2026": 7200, 
-        "8/2/2026": 6000, 
-    });
+    const [timeByDate, setTimeByDate] = useState(generateTestTimeData());
 
     const [weeklyTimeGoals, setWeeklyTimeGoals] = useState({
+        "5/18/2026": 86400,
+        "5/25/2026": 86400,
+        "6/1/2026": 86400,
+        "6/8/2026": 86400,
+        "6/15/2026": 86400,
+        "6/22/2026": 86400,
+        "6/29/2026": 86400,
+        "7/6/2026": 86400,
         "7/13/2026": 86400,
         "7/20/2026": 86400,
         "7/27/2026": 86400,
+        "8/3/2026": 86400
     })
 
   const [ tasksByDate, setTasksByDate ] = useState({
@@ -226,71 +232,143 @@ function App() {
       ]
   });
 
-  const [sessions, setSessions] = useState([
+    const [sessions, setSessions] = useState([
+        // Monday — 2 hours
         {
             id: 1,
-            projectId: 1,
-            taskId: 3, // Work on Dashboard
-            startTime: "2026-07-27T09:00:00",
-            endTime: "2026-07-27T11:00:00",
-            durationSeconds: 7200,
-            date: "7/27/2026"
+            projectId: 0,
+            taskId: 6, // Weekly Quiz
+            startTime: "2026-08-03T09:00:00",
+            endTime: "2026-08-03T09:30:00",
+            durationSeconds: 1800,
+            date: "8/3/2026"
         },
         {
             id: 2,
-            projectId: 3,
-            taskId: 4, // Linux+ Study
-            startTime: "2026-07-25T11:30:00",
-            endTime: "2026-07-25T12:15:00",
-            durationSeconds: 2700,
-            date: "7/25/2026"
+            projectId: 1,
+            taskId: 3, // Work on Dashboard
+            startTime: "2026-08-03T10:00:00",
+            endTime: "2026-08-03T11:30:00",
+            durationSeconds: 5400,
+            date: "8/3/2026"
         },
+
+        // Tuesday — 3 hours 45 minutes
         {
             id: 3,
-            projectId: 2,
-            taskId: null, // Gym
-            startTime: "2026-07-25T18:00:00",
-            endTime: "2026-07-25T19:00:00",
-            durationSeconds: 3600,
-            date: "7/25/2026"
+            projectId: 3,
+            taskId: 4, // Linux+ Study
+            startTime: "2026-08-04T09:30:00",
+            endTime: "2026-08-04T10:45:00",
+            durationSeconds: 4500,
+            date: "8/4/2026"
         },
         {
             id: 4,
-            projectId: 0,
-            taskId: 6, // Weekly Quiz
-            startTime: "2026-07-26T09:00:00",
-            endTime: "2026-07-26T09:30:00",
-            durationSeconds: 1800,
-            date: "7/26/2026"
+            projectId: 2,
+            taskId: null, // Python practice
+            startTime: "2026-08-04T13:00:00",
+            endTime: "2026-08-04T14:30:00",
+            durationSeconds: 5400,
+            date: "8/4/2026"
         },
         {
             id: 5,
-            projectId: 1,
-            taskId: 3, // Work on Dashboard
-            startTime: "2026-07-26T10:00:00",
-            endTime: "2026-07-26T12:00:00",
-            durationSeconds: 7200,
-            date: "7/14/2026"
+            projectId: 0,
+            taskId: 5, // Gym
+            startTime: "2026-08-04T18:00:00",
+            endTime: "2026-08-04T19:00:00",
+            durationSeconds: 3600,
+            date: "8/4/2026"
         },
+
+        // Wednesday — 2 hours 45 minutes
         {
             id: 6,
-            projectId: 3,
-            taskId: 4, // Linux+ Study
-            startTime: "2026-07-26T13:15:00",
-            endTime: "2026-07-26T14:00:00",
-            durationSeconds: 2700,
-            date: "7/26/2026"
+            projectId: 1,
+            taskId: 3, // Work on Dashboard
+            startTime: "2026-08-05T09:00:00",
+            endTime: "2026-08-05T11:00:00",
+            durationSeconds: 7200,
+            date: "8/5/2026"
         },
         {
             id: 7,
+            projectId: 3,
+            taskId: 4, // Linux+ Study
+            startTime: "2026-08-05T14:00:00",
+            endTime: "2026-08-05T14:45:00",
+            durationSeconds: 2700,
+            date: "8/5/2026"
+        },
+
+        // Thursday — 3 hours 30 minutes
+        {
+            id: 8,
+            projectId: 1,
+            taskId: 3, // Work on Dashboard
+            startTime: "2026-08-06T08:30:00",
+            endTime: "2026-08-06T10:00:00",
+            durationSeconds: 5400,
+            date: "8/6/2026"
+        },
+        {
+            id: 9,
+            projectId: 3,
+            taskId: 4, // Linux+ Study
+            startTime: "2026-08-06T13:00:00",
+            endTime: "2026-08-06T14:00:00",
+            durationSeconds: 3600,
+            date: "8/6/2026"
+        },
+        {
+            id: 10,
             projectId: 0,
             taskId: 5, // Gym
-            startTime: "2026-07-26T17:30:00",
-            endTime: "2026-07-26T18:30:00",
+            startTime: "2026-08-06T17:30:00",
+            endTime: "2026-08-06T18:30:00",
             durationSeconds: 3600,
-            date: "7/26/2026"
+            date: "8/6/2026"
         },
-    ])
+
+        // Friday — 2 hours
+        {
+            id: 11,
+            projectId: 2,
+            taskId: null, // Python practice
+            startTime: "2026-08-07T09:30:00",
+            endTime: "2026-08-07T11:00:00",
+            durationSeconds: 5400,
+            date: "8/7/2026"
+        },
+        {
+            id: 12,
+            projectId: 0,
+            taskId: null, // Other
+            startTime: "2026-08-07T14:00:00",
+            endTime: "2026-08-07T14:30:00",
+            durationSeconds: 1800,
+            date: "8/7/2026"
+        }
+    ]);
+
+    const [projectActivityByDate, setProjectActivityByDate] = useState({
+        "8/7/2026": [1, 3],
+        "8/8/2026": [1],
+        "8/9/2026": [2, 3]
+    });
+
+    function recordProjectActivity(projectId, dateKey) {
+        setProjectActivityByDate(prev => ({
+            ...prev,
+            [dateKey]: [
+                ...new Set([
+                    ...(prev[dateKey] ?? []),
+                    projectId
+                ])
+            ]
+        }));
+    }
 
     useEffect(() => {
         if (!timer.isRunning || !timer.startTime) return;
@@ -360,8 +438,16 @@ function App() {
   }
 
   function handleToggleTask(dateKey, taskId) {
-      const today = new Date();
-      today.setHours(0, 0, 0, 0);
+      const today = getTodayDate();
+      const todayKey = getDateKey(today);
+
+      const task = tasksByDate[dateKey].find(
+          task => task.id === taskId
+      );
+
+      if (!task.isDone) {
+          recordProjectActivity(task.projectId, todayKey);
+      }
 
       setTasksByDate(prev => ({
           ...prev,
@@ -397,17 +483,50 @@ function App() {
       setIsSessionModalOpen(true);
   }
 
-  function handleCreateProject(name, color) {
+  function handleCreateProject(name, color, isTracking, goal, unit) {
       setProjects(prevProjects => 
           [...prevProjects, {
             id: Date.now(),
             name: name,
             color: color,
             timeSpent: 0,
-            isArchived: false
+            isArchived: false,
+            progressTracking: isTracking
+            ? {
+               currentValue: 0,
+               goalValue: Number(goal),
+               unit: unit.trim() 
+            }
+            : null
           }]
       )
   }
+
+    function handleChangeProjectProgress(projectId, amount) {
+        setProjects(prevProjects =>
+            prevProjects.map(project => {
+                if (
+                    project.id !== projectId ||
+                    !project.progressTracking
+                ) {
+                    return project;
+                }
+
+                const nextValue = Math.max(
+                    0,
+                    project.progressTracking.currentValue + amount
+                );
+
+                return {
+                    ...project,
+                    progressTracking: {
+                        ...project.progressTracking,
+                        currentValue: nextValue
+                    }
+                };
+            })
+        );
+    }
 
   function handleUpdateSession(session, edits) {
       setSessions(prevSessions => 
@@ -517,6 +636,9 @@ function App() {
                                     weeklyTimeGoals={weeklyTimeGoals}
                                     setWeeklyTimeGoals={setWeeklyTimeGoals}
                                     tasksByDate={tasksByDate}
+                                    projects={projects}
+                                    sessions={sessions}
+                                    projectActivityByDate={projectActivityByDate}
                                 />
                             } 
                     />

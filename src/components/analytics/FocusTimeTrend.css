@@ -1,0 +1,42 @@
+.focus-time-trend-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    background-color: var(--surface);
+    border: 1px solid var(--border);
+    height: 400px;
+    width: 700px;
+    padding: 1rem 1rem 0 1rem;
+}
+
+.focus-time-trend-container .divider-vertical {
+    height: 60%;
+    align-self: flex-start;
+}
+
+.focus-time-trend-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    border-bottom: 1px solid var(--border);
+    height: 35px;
+}
+
+.focus-time-trend-title {
+    font-weight: 500;
+}
+
+.date-range-filter-options {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.5rem;
+    height: 100%;
+}
+
+.date-range-filter-options button.active {
+    color: var(--blue);
+}
+
+.daily-focus-time-trend {
+    margin-left: 30px;
+}

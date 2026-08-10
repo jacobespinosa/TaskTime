@@ -1,0 +1,31 @@
+.pie-chart-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+}
+
+.pie-chart-title {
+    font-weight: 500;
+    margin-top: 1.25rem;
+}
+
+.pie-chart {
+    border-radius: 50%;
+    aspect-ratio: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.pie-chart-center {
+    width: 60%;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    background: var(--surface);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 1.5rem;
+}

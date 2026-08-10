@@ -43,8 +43,12 @@
     font-size: 1.1rem;
 }
 
+.input-group .value-input,
+.input-group .goal-input,
+.input-group .unit-input,
 .input-group .name-input {
     color: var(--text-primary);
+    font-family: inherit;
     padding: 0.5rem;
     width: 500px;
     height: 40px;
@@ -52,6 +56,9 @@
     border: 1px solid var(--input-border);
 }
 
+.input-group .value-input:focus,
+.input-group .goal-input:focus,
+.input-group .unit-input:focus,
 .input-group .name-input:focus {
     outline: none;
 }

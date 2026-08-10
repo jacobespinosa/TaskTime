@@ -1,0 +1,111 @@
+.project-consistency-container {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    background-color: var(--surface);
+    padding: 1rem;
+    border: 1px solid var(--border);
+}
+
+.project-consistency-filters {
+    display: flex;
+    justify-content: space-between;
+}
+.project-consistency-filters .project-filter-wrapper {
+    position: relative;
+}
+
+.project-consistency-filters .project-filter {
+    display: inline-flex;
+    gap: 0.2rem;
+    color: var(--blue);
+    width: fit-content;
+}
+
+.project-consistency-filter-menu {
+    display: flex;
+    flex-direction: column;
+    z-index: 999;
+    left: 0px;
+    top: 20px;
+    position: absolute;
+    width: 100px;
+    border: 1px solid var(--border);
+    border-bottom: none;
+    background: var(--surface);
+}
+
+.project-consistency-filter-menu button {
+    font-size: inherit;
+    font-family: inherit;
+    border: none;
+    border-bottom: 1px solid var(--border);
+    background-color: var(--surface);
+    padding: 0.7rem 1.2rem;
+    cursor: pointer;
+}
+
+.project-consistency-filter-menu button:hover {
+    background-color: var(--border);
+}
+
+.calendar-nav {
+    display: flex;
+    gap: 0.3rem;
+}
+
+.month-year-container {
+    width: 120px;
+    text-align: center;
+}
+
+.prev-month,
+.next-month {
+    color: var(--text-secondary);
+}
+
+.prev-month:hover,
+.next-month:hover {
+    color: var(--text-primary);
+}
+
+.prev-month:active,
+.next-month:active {
+    color: var(--blue);
+}
+
+.calendar-grid { 
+    padding: 0.5rem 2rem;
+    display: grid;
+    grid-template-columns: repeat(7, 1fr) 
+}
+.calendar-grid .weekDay {
+    text-transform: uppercase;
+    color: var(--text-secondary);
+    font-size: .8rem;
+    text-align: center;
+    margin-bottom: 0.4rem;
+}
+
+.calendar-day {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    justify-self: center;
+    width: 27px;
+    border-radius: 5px;
+    padding: 0.20rem;
+    /*border: 1px solid var(--border);*/
+    margin-bottom: 0.4rem;
+}
+
+.calendar-day.done {
+    background-color: var(--green);
+    border: none;
+}
+
+.calendar-day.today {
+    border: 1px solid var(--blue);
+    box-shadow: inset 0 0 0 1px var(--blue);
+}

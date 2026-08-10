@@ -205,7 +205,7 @@ Daily(the week) Weekly(the month) monthly(the year)
 │ [LeetCode ▼]       [‹ July 2026 ›]           │
 │                                              │
 │        Monthly binary calendar               │
-│        completed / not completed              │
+│        completed / not completed             │
 │                                              │
 │ 18 active days   58% consistency   6-day max │
 └──────────────────────────────────────────────┘
@@ -223,3 +223,6 @@ Daily(the week) Weekly(the month) monthly(the year)
 │ Project Comparison                           │
 │ Project | Time | Tasks | Sessions | Avg      │
 └──────────────────────────────────────────────┘
+
+
+Project Modals

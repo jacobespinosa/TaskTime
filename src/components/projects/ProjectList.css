@@ -36,12 +36,16 @@
 
 .project-list-top-label {
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
     align-items: center;
     padding: 1rem 2rem;
     background-color: var(--surface);
     border-bottom: 1px solid var(--border);
     width: 100%;
+}
+
+.project-list-progress-label {
+    color: var(--text-secondary);
 }
 
 .project-item-delete-btn,
@@ -74,7 +78,7 @@
 
 .project-list-item {
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
     align-items: center;
     padding: 0.5rem 2rem;
     border-bottom: 1px solid var(--border);
@@ -192,6 +196,7 @@
     background-color: var(--border);
 }
 
+.project-list-progress-column,
 .project-list-time-column {
     display: flex;
     align-items: center;

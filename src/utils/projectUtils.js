@@ -10,7 +10,7 @@ export function getTextColor(hex) {
     return brightness > 160 ? "#222" : "#fff";
 }
 
-/* return object with the project object and time spent of project this week */
+/* return object with the project object and time spent of project this week in minutes*/
 export function getWeeklyProjectStats(projects, sessions) {
         const weekStart = getCurrentWeekStart();
         const projectMap = new Map();

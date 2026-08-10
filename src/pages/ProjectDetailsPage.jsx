@@ -79,6 +79,54 @@ function ProjectDetailsPage({projects, setProjects, tasksByDate, taskActions, se
         );
     }
 
+    function handleProjectGoalChange(goal) {
+        setProjects(prevProjects =>
+            prevProjects.map(project =>
+                project.id === Number(projectId)
+                ? {
+                    ...project,
+                    progressTracking: {
+                        ...project.progressTracking,
+                        goalValue: Number(goal)
+                    }
+                }
+                : project
+            )
+        );
+    }
+
+    function handleProjectUnitChange(unit) {
+        setProjects(prevProjects =>
+            prevProjects.map(project =>
+                project.id === Number(projectId)
+                ? {
+                    ...project,
+                    progressTracking: {
+                        ...project.progressTracking,
+                        unit: unit.trim()
+                    }
+                }
+                : project
+            )
+        );
+    }
+
+    function handleProjectValueChange(value) {
+        setProjects(prevProjects =>
+            prevProjects.map(project =>
+                project.id === Number(projectId)
+                ? {
+                    ...project,
+                    progressTracking: {
+                        ...project.progressTracking,
+                        currentValue: Number(value)
+                    }
+                }
+                : project
+            )
+        );
+    }
+
     return (
         <main className="project-details">
             <section className='project-details-content'>
@@ -103,6 +151,9 @@ function ProjectDetailsPage({projects, setProjects, tasksByDate, taskActions, se
                     tasks={tasks}
                     handleProjectNameChange={handleProjectNameChange}
                     handleProjectColorChange={handleProjectColorChange}
+                    handleProjectGoalChange={handleProjectGoalChange}
+                    handleProjectUnitChange={handleProjectUnitChange}
+                    handleProjectValueChange={handleProjectValueChange}
                     sortConfig={sortConfig}
                     handleSort={handleSort}
                     handleEditTask={handleEditTask}

@@ -123,3 +123,7 @@ export function getTaskDueDateText(task) {
         return `Due in ${daysUntilDue} ${daysUntilDue === 1 ? "day" : "days"}`;
     }
 }
+
+export function getProjectTasks(projectId, tasksByDate) {
+    return Object.values(tasksByDate).flat().filter(task => task.projectId = projectId);
+}

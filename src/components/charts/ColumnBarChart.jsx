@@ -10,9 +10,9 @@ function ColumnBarChart({title, data, maxValue, getKey, getValue,
 
     return (
         <div className="column-bar-chart-container">
-            <h3 className='column-bar-chart-title'>
+            <h4 className='column-bar-chart-title'>
                 {title}
-            </h3> 
+            </h4> 
             <div className='column-bar-chart-area'>
                 <div className='column-bar-chart-grid'>
                     {hourMarkers.map((mins) => {

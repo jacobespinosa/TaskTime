@@ -4,3 +4,81 @@
     color: var(--text-primary);
     margin-bottom: 2rem;
 }
+
+.analytics-container {
+    border: 1px solid black;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 1.5rem;
+    grid-template-areas: 
+        'summaryCards weeklyGoalProgress focusTimeTrend'
+        'projectConsistency weeklyGoalProgress focusTimeTrend'
+        'heatmap pieChart progressRing';
+}
+
+.summary-card-area {
+    grid-area: summaryCards;
+}
+
+.weekly-goal-progress-area {
+    grid-area: weeklyGoalProgress;
+    justify-self: center;
+}
+
+.focus-time-trend-area {
+    grid-area: focusTimeTrend;
+    margin-left: auto;
+}
+
+.pie-chart-area {
+    grid-area: pieChart;
+    position: relative;
+    justify-self: right;
+}
+
+.project-progress-ring-area {
+    grid-area: progressRing;
+    position: relative;
+    width: 375px;
+    justify-self: right;
+}
+
+.project-consistency-area {
+    grid-area: projectConsistency;
+}
+
+.project-heatmap-area {
+    grid-area: heatmap;
+}
+
+.project-breakdown-hover-container {
+    position: absolute;
+    width: 550px;
+    left: 375px;
+    top: 75px;
+    background-color: var(--surface);
+    box-shadow: 1px 1px 8px var(--shadow);
+}
+
+.project-progress-arrow {
+    position: absolute;
+    color: var(--text-secondary);
+    font-size: 1rem;
+    top: 19px;
+}
+
+.project-progress-arrow:hover {
+    color: var(--text-primary);
+}
+
+.project-progress-arrow:active {
+    color: var(--blue);
+}
+
+.project-progress-arrow.prev {
+    left: 75px;
+}
+
+.project-progress-arrow.next {
+    right: 75px;
+}

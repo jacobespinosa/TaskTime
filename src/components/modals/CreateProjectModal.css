@@ -12,7 +12,7 @@
     display: flex;
     flex-direction: column;
     width: 600px;
-    height: 300px;
+    height: 400px;
     border: 1px solid var(--border);
     border-radius: 14px;
     background-color: var(--background);
@@ -27,12 +27,14 @@
 
 .project-form {
     display: flex;
-    align-items: center;
+    flex-direction: column;
     padding: 1.5rem;
     margin-left: 2rem;
+    gap: 1rem;
 }
 
 .project-name-input {
+    font-family: inherit;
     height: 40px;
     width: 80%;
     padding: 0.5rem;
@@ -80,4 +82,44 @@
     font-size: 2.5rem;
     right: 13px;
     top: 1px;
+}
+
+.project-name-color-container {
+    display: flex;
+    align-items: center;
+}
+
+.project-numeric-tracking {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.project-numeric-tracking .title {
+    font-weight: 500;
+    color: var(--text-primary);
+}
+
+.project-numeric-tracking label {
+    margin: 0 1.5rem 0 0.5rem;
+}
+
+.project-progress-options {
+    display: flex;
+    gap: 1rem;
+}
+
+
+.project-progress-options input {
+    font-family: inherit;
+    height: 40px;
+    font-size: 1rem;
+    padding: 1rem 0.5rem; 
+    border: 1px solid var(--input-border);
+    border-radius: 10px;
+    background: var(--surface);
+}
+
+.project-progress-options input:focus {
+    outline: none;
 }

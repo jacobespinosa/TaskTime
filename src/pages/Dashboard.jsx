@@ -87,6 +87,8 @@ function Dashboard({projects, setProjects, tasksByDate, setTasksByDate,
                 title={"Total Weekly Tasks"}
                 unit=""
                 onClick={""}
+                width="300px"
+                unit={""}
               />
             </div>
             <div className="total-weekly-time-ring">
@@ -96,6 +98,8 @@ function Dashboard({projects, setProjects, tasksByDate, setTasksByDate,
                 title={"Total Weekly Time"}
                 type="time"
                 onClick={() => setIsWeeklyGoalModalOpen(true)}
+                width="300px"
+                unit={""}
               />
             </div>
 

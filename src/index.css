@@ -31,3 +31,15 @@ body {
     font-family: var(--font-primary);
     font-size: 0.9300rem;
 }
+
+button {
+    font-family: inherit;
+    font-size: inherit;
+    border: none;
+    background-color: transparent;
+    cursor: pointer;
+}
+
+.chart-title {
+    font-weight: 500;
+}

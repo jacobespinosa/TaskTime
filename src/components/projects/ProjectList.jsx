@@ -6,6 +6,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronDown, faChevronUp } from '@fortawesome/free-solid-svg-icons';
 import ProjectConfirmDeleteModal from '../modals/ProjectConfirmDeleteModal';
 import SortableColumnHeader from '../buttons/SortableColumnHeader';
+import { calculateGoalPercentage } from '../../utils/mathUtils';
 
 function ProjectList({projects, setProjects, setTasksByDate, setSessions}) {
     const navigate = useNavigate();
@@ -28,6 +29,23 @@ function ProjectList({projects, setProjects, setTasksByDate, setSessions}) {
         }
         else if (field === "timeSpent") {
             comparison = a.timeSpent - b.timeSpent;
+        }
+        else if (field === "progress") {
+            const aProgress = a.progressTracking
+                ? calculateGoalPercentage(
+                    a.progressTracking.currentValue,
+                    a.progressTracking.goalValue
+                )
+                : -1;
+
+            const bProgress = b.progressTracking
+                ? calculateGoalPercentage(
+                    b.progressTracking.currentValue,
+                    b.progressTracking.goalValue
+                )
+                : -1;
+
+            comparison = aProgress - bProgress;
         }
 
         return direction === "ascending"
@@ -124,6 +142,7 @@ function ProjectList({projects, setProjects, setTasksByDate, setSessions}) {
         return true;
     });
 
+
     return (
         <div className='project-list-container'>
             <h3 className='project-list-header'>
@@ -142,7 +161,12 @@ function ProjectList({projects, setProjects, setTasksByDate, setSessions}) {
                     sortConfig={sortConfig}
                     onSort={handleSort}
                 />
-
+                <SortableColumnHeader
+                    label="Progress"
+                    field="progress"
+                    sortConfig={sortConfig}
+                    onSort={handleSort}
+                />
                 <button type="button" className='project-list-filter-btn'
                         onClick={() => setIsFilterDropdownOpen(prev => !prev)}
                         ref={dropdownRef}
@@ -168,6 +192,11 @@ function ProjectList({projects, setProjects, setTasksByDate, setSessions}) {
                     } else if (filterType === "archived") {
                         if (!project.isArchived) return;
                     }
+
+                    const value = project.progressTracking?.currentValue ?? 0;
+                    const goal = project.progressTracking?.goalValue ?? 0;
+                    const projectProgressPercent = calculateGoalPercentage(value, goal).toFixed(0);
+
                     return (
                         <li key={project.id}
                             className="project-list-item"
@@ -193,6 +222,12 @@ function ProjectList({projects, setProjects, setTasksByDate, setSessions}) {
                                 <div className="divider-vertical"></div>
                                 <span className="project-tracked-time">
                                     {formatMinutesHHMMIncludeZero(project.timeSpent / 60)}
+                                </span>
+                            </div>
+                            <div className='project-list-progress-column'>
+                                <div className='divider-vertical'></div>
+                                <span className='project-progress-percent'>
+                                    {project.progressTracking? `${projectProgressPercent}%` : "--"}
                                 </span>
                             </div>
                             <div className='project-actions'>

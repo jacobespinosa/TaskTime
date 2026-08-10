@@ -7,7 +7,9 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircleCheck, faTrashCan } from '@fortawesome/free-regular-svg-icons';
 
 function ProjectDetails({project, tasks, handleProjectNameChange,
-                         handleProjectColorChange, sortConfig, handleSort,
+                         handleProjectColorChange, handleProjectGoalChange,
+                         handleProjectUnitChange, handleProjectValueChange, 
+                         sortConfig, handleSort,
                          handleEditTask, handleAddTask, handleDeleteTask, 
                          handleToggleTask, setCurrentProjectId}) {
     setCurrentProjectId(project.id);
@@ -62,6 +64,48 @@ function ProjectDetails({project, tasks, handleProjectNameChange,
                                onChange={(e) => handleProjectColorChange(e.target.value)}
                         />
                     </div>
+                    <div className='divider'></div>
+                    {project.progressTracking &&
+                        <>
+                            <div className='input-group'>
+                                <label htmlFor="goal" className='input-label'>
+                                    Goal
+                                </label>
+                                <input type="number"
+                                    id="goal"
+                                    className='goal-input'
+                                    min="1"
+                                    value={project.progressTracking.goalValue}
+                                    onChange={(e) => handleProjectGoalChange(e.target.value)}
+                                />
+                            </div>
+                            <div className='divider'></div>
+                            <div className='input-group'>
+                                <label htmlFor='unit' className='input-label'>
+                                    Unit
+                                </label>
+                                <input type="text"
+                                    id="unit"
+                                    className='unit-input'
+                                    value={project.progressTracking.unit}
+                                    onChange={(e) => handleProjectUnitChange(e.target.value)}
+                                />
+                            </div>
+                            <div className='divider'></div>
+                            <div className='input-group'>
+                                <label htmlFor="value" className='input-label'>
+                                    Value
+                                </label>
+                                <input type="number"
+                                    id="value"
+                                    className='value-input'
+                                    min="0"
+                                    value={project.progressTracking.currentValue}
+                                    onChange={(e) => handleProjectValueChange(e.target.value)}
+                                />
+                            </div>
+                        </>
+                    }
                 </div>
             </section>
             <section className="project-tasks">

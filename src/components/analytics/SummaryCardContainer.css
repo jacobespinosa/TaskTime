@@ -8,6 +8,10 @@
     box-shadow: 1px 1px 8px var(--shadow);
 }
 
+.date-range-filter {
+    position: relative;
+}
+
 .date-range-filter-btn {
     font-size: inherit;
     font-family: inherit;
@@ -17,6 +21,34 @@
     display: inline-flex;
     gap: 0.2rem;
     color: var(--blue);
+    width: fit-content;
+}
+
+.date-range-filter-menu {
+    display: flex;
+    flex-direction: column;
+    z-index: 999;
+    left: 0px;
+    top: 25px;
+    position: absolute;
+    width: 100px;
+    border: 1px solid var(--border);
+    border-bottom: none;
+    background: var(--surface);
+}
+
+.date-range-filter-menu button {
+    font-size: inherit;
+    font-family: inherit;
+    border: none;
+    border-bottom: 1px solid var(--border);
+    background-color: var(--surface);
+    padding: 0.7rem 1.2rem;
+    cursor: pointer;
+}
+
+.date-range-filter-menu button:hover {
+    background-color: var(--border);
 }
 
 .summary-cards {

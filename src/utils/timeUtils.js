@@ -12,6 +12,11 @@ export function formatMinutesHHMMIncludeZero(minutes) {
     return `${hours > 0 ? `${hours}h ` : ""}${mins > 0 ? `${mins}m` : "0m"}`;
 }
 
+export function formatMinutesHH(minutes) {
+    const hours = Math.floor(minutes / 60);
+    return `${hours > 0 ? `${hours}h` : "0h"}`;
+}
+
 export function formatSecondsHHMMSS(totalSeconds) {
     const hours = Math.floor(totalSeconds / 3600);
     const minutes = Math.floor((totalSeconds % 3600) / 60);
