@@ -6,14 +6,19 @@
 }
 
 .analytics-container {
-    border: 1px solid black;
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
+    display: flex;
     gap: 1.5rem;
+}
+
+.analytics-left {
+    display: grid;
+    gap: 1.5rem;
+    grid-template-columns: 1fr 1fr;
+    grid-auto-rows: auto;
     grid-template-areas: 
-        'summaryCards weeklyGoalProgress focusTimeTrend'
-        'projectConsistency weeklyGoalProgress focusTimeTrend'
-        'heatmap pieChart progressRing';
+        'summaryCards weeklyGoalProgress'
+        'projectConsistency weeklyGoalProgress'
+        'heatmap heatmap';
 }
 
 .summary-card-area {
@@ -22,25 +27,20 @@
 
 .weekly-goal-progress-area {
     grid-area: weeklyGoalProgress;
-    justify-self: center;
 }
 
 .focus-time-trend-area {
-    grid-area: focusTimeTrend;
-    margin-left: auto;
+    grid-area: focusTimeChart;
 }
 
 .pie-chart-area {
-    grid-area: pieChart;
     position: relative;
-    justify-self: right;
+    grid-area: pieChart;
 }
 
 .project-progress-ring-area {
-    grid-area: progressRing;
     position: relative;
-    width: 375px;
-    justify-self: right;
+    flex-shrink: 0;
 }
 
 .project-consistency-area {
@@ -51,13 +51,19 @@
     grid-area: heatmap;
 }
 
+.circle-charts {
+    display: flex;
+    justify-content: space-around;
+}
+
 .project-breakdown-hover-container {
     position: absolute;
     width: 550px;
-    left: 375px;
-    top: 75px;
+    left: -10px;
+    top: -170px;
     background-color: var(--surface);
     box-shadow: 1px 1px 8px var(--shadow);
+    z-index: 999;
 }
 
 .project-progress-arrow {
@@ -76,9 +82,9 @@
 }
 
 .project-progress-arrow.prev {
-    left: 75px;
+    left: 50px;
 }
 
 .project-progress-arrow.next {
-    right: 75px;
+    right: 50px;
 }

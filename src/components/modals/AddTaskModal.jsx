@@ -38,7 +38,7 @@ function AddTaskModal({mode, task, onClose, onSubmit, projects, currentProjectId
                     </div>
                     <div className="task-form-group">
                         <label htmlFor="due-date">
-                            Enter Due Date: <span className="optional">(optional)</span>
+                            Enter Due Date:
                         </label>
                         <input
                             id="due-date"
@@ -50,7 +50,7 @@ function AddTaskModal({mode, task, onClose, onSubmit, projects, currentProjectId
                     </div>
                     <div className="task-form-group">
                         <label htmlFor="time">
-                            Enter Estimated Time: <span className="optional">(optional)</span>
+                            Enter Estimated Time:
                         </label>
                         <select 
                             id="time" 
@@ -72,7 +72,7 @@ function AddTaskModal({mode, task, onClose, onSubmit, projects, currentProjectId
                     </div>
                     <div className="task-form-group">
                         <label htmlFor="project">
-                            Enter Associated Project: <span className="optional">(optional)</span>
+                            Enter Associated Project:
                         </label>
                         <select
                             id="project"

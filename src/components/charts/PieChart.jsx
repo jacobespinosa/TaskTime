@@ -1,10 +1,8 @@
 import './PieChart.css';
 import { getWeeklyProjectStats } from '../../utils/projectUtils';
 import { formatMinutesHHMMIncludeZero } from '../../utils/timeUtils';
-import { getCurrentWeekStart } from '../../utils/dateUtils';
 
-function PieChart({title, projects, sessions, timeByDate, width, setIsPieChartHovered}) {
-    const currentWeekStart = getCurrentWeekStart()
+function PieChart({title, projects, sessions, width, setIsPieChartHovered}) {
     const projectStats = getWeeklyProjectStats(projects, sessions);
     const sortedProjectStats = projectStats.toSorted((a, b) => b.time - a.time);
     const totalWeeklyTime = sortedProjectStats.reduce(
@@ -13,16 +11,19 @@ function PieChart({title, projects, sessions, timeByDate, width, setIsPieChartHo
     );
 
     let start = 0;
-    const pieGradient = `conic-gradient(${sortedProjectStats
-        .map(({ project, time }) => {
-            const percent = (time / totalWeeklyTime) * 100;
+    const pieGradient = totalWeeklyTime <= 0
+        ? "var(--shadow)"
+        : `conic-gradient(${sortedProjectStats
+            .map(({ project, time }) => {
+                const percent = (time / totalWeeklyTime) * 100;
 
-            const slice = `${project.color} ${start}% ${start + percent}%`;
+                const slice = `${project.color} ${start}% ${start + percent}%`;
 
-            start += percent;
+                start += percent;
 
-            return slice;
-        }).join(", ")})`;
+                return slice;
+            })
+            .join(", ")})`;
 
     return (
         <div className='pie-chart-container'>

@@ -17,6 +17,12 @@
     --green: #22c55e;
     --orange: #ffb242;
     --red: #ef4444;
+
+    --heatmap-0: color-mix(in srgb, var(--background) 100%, white 0%);
+    --heatmap-1: color-mix(in oklab, #1DB77A 30%, transparent);
+    --heatmap-2: color-mix(in oklab, #1DB77A 50%, transparent);
+    --heatmap-3: color-mix(in oklab, #1DB77A 70%, transparent);
+    --heatmap-4: #1DB77A;
 }
 
 *,

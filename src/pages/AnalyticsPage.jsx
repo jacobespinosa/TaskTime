@@ -9,6 +9,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronLeft, faChevronRight } from '@fortawesome/free-solid-svg-icons';
 import { useState } from 'react';
 import ProjectConsistency from '../components/analytics/ProjectConsistency';
+import ProjectHeatmap from '../components/analytics/ProjectHeatmap';
 
 function AnalyticsPage({timeByDate, weeklyTimeGoals, setWeeklyTimeGoals, tasksByDate,
                         projects, sessions, projectActivityByDate
@@ -18,7 +19,11 @@ function AnalyticsPage({timeByDate, weeklyTimeGoals, setWeeklyTimeGoals, tasksBy
 
     const progressTrackedProjects = projects.filter(project => project.progressTracking);
     const currentProject = progressTrackedProjects[currentProjectIndex];
-    const { currentValue, goalValue, unit } = currentProject.progressTracking;
+    const {
+        currentValue = 0,
+        goalValue = 0,
+        unit = "No Unit"
+    } = currentProject?.progressTracking ?? {};
 
     function handlePreviousProject() {
         setCurrentProjectIndex(currentIndex =>
@@ -43,77 +48,86 @@ function AnalyticsPage({timeByDate, weeklyTimeGoals, setWeeklyTimeGoals, tasksBy
                     <h1>Analytics</h1>
                 </div>
                 <div className='analytics-container'>
-                    <div className="summary-card-area">
-                        <SummaryCardContainer 
-                            timeByDate={timeByDate}
-                            weeklyTimeGoals={weeklyTimeGoals}
-                            tasksByDate={tasksByDate}
-                        />
+                    <div className='analytics-left'>
+                        <div className="summary-card-area">
+                            <SummaryCardContainer 
+                                timeByDate={timeByDate}
+                                weeklyTimeGoals={weeklyTimeGoals}
+                                tasksByDate={tasksByDate}
+                            />
+                        </div>
+                        <div className="weekly-goal-progress-area">
+                            <WeeklyGoalProgress 
+                                timeByDate={timeByDate}
+                                weeklyTimeGoals={weeklyTimeGoals}
+                            />
+                        </div>
+                        <div className='project-consistency-area'>
+                            <ProjectConsistency 
+                                projects={projects}
+                                tasksByDate={tasksByDate}
+                                projectActivityByDate={projectActivityByDate}
+                            />
+                        </div>
+                        <div className='project-heatmap-area'>
+                            <ProjectHeatmap 
+                                projects={projects}
+                                sessions={sessions}
+                            />
+                        </div>
                     </div>
-                    <div className="weekly-goal-progress-area">
-                        <WeeklyGoalProgress 
-                            timeByDate={timeByDate}
-                            weeklyTimeGoals={weeklyTimeGoals}
-                        />
-                    </div>
-                    <div className='focus-time-trend-area'>
-                        <FocusTimeTrend 
-                            timeByDate={timeByDate}
-                        />
-                    </div>
-                    <div className='pie-chart-area'>
-                        <PieChart 
-                            title="Project Breakdown"
-                            projects={projects}
-                            sessions={sessions}
-                            timeByDate={timeByDate}
-                            width="300px"
-                            setIsPieChartHovered={setIsPieChartHovered}
-                        />
-                        {isPieChartHovered &&
-                            <div className='project-breakdown-hover-container'>
-                                <ProjectTimeBreakdown 
+                    <div className='analytics-right'>
+                        <div className='focus-time-trend-area'>
+                            <FocusTimeTrend 
+                                timeByDate={timeByDate}
+                            />
+                        </div>
+                        <div className='circle-charts'>
+                            <div className='pie-chart-area'>
+                                <PieChart 
+                                    title="Project Breakdown"
                                     projects={projects}
                                     sessions={sessions}
+                                    timeByDate={timeByDate}
+                                    width="300px"
+                                    setIsPieChartHovered={setIsPieChartHovered}
                                 />
+                                {isPieChartHovered &&
+                                    <div className='project-breakdown-hover-container'>
+                                        <ProjectTimeBreakdown 
+                                            projects={projects}
+                                            sessions={sessions}
+                                        />
+                                    </div>
+                                }
                             </div>
-                        }
-                    </div>
-                    <div className="project-progress-ring-area">
-                            <button type='button'
-                                    className='project-progress-arrow prev'
-                                    onClick={() => handlePreviousProject()}
-                                    aria-label="Previous project"
-                            >
-                                <FontAwesomeIcon icon={faChevronLeft} />
-                            </button>
-                            <ProgressRing 
-                                value={currentValue}
-                                goal={goalValue}
-                                title={`${currentProject.name} Progress`}
-                                type="number"
-                                onClick={""}
-                                width={"300px"}
-                                unit={unit}
-                            />
-                            <button
-                                type="button"
-                                className="project-progress-arrow next"
-                                onClick={() => handleNextProject()}
-                                aria-label="Next project"
-                            >
-                                <FontAwesomeIcon icon={faChevronRight} />
-                            </button>
-                    </div>
-                    <div className='project-consistency-area'>
-                        <ProjectConsistency 
-                            projects={projects}
-                            tasksByDate={tasksByDate}
-                            projectActivityByDate={projectActivityByDate}
-                        />
-                    </div>
-                    <div className='project-heatmap-area'>
-
+                            <div className="project-progress-ring-area">
+                                    <button type='button'
+                                            className='project-progress-arrow prev'
+                                            onClick={() => handlePreviousProject()}
+                                            aria-label="Previous project"
+                                    >
+                                        <FontAwesomeIcon icon={faChevronLeft} />
+                                    </button>
+                                    <ProgressRing 
+                                        value={currentValue}
+                                        goal={goalValue}
+                                        title={`${currentProject?.name ?? "No"} Progress`}
+                                        type="number"
+                                        onClick={""}
+                                        width={"300px"}
+                                        unit={unit}
+                                    />
+                                    <button
+                                        type="button"
+                                        className="project-progress-arrow next"
+                                        onClick={() => handleNextProject()}
+                                        aria-label="Next project"
+                                    >
+                                        <FontAwesomeIcon icon={faChevronRight} />
+                                    </button>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </section>

@@ -34,7 +34,7 @@ function SideBar() {
           Analytics
         </NavLink>
       </div>
-
+    {/*
       <div className="sidebar-section">
         <p className="sidebar-title">General</p>
         <a href="#" className="sidebar-link">
@@ -42,6 +42,7 @@ function SideBar() {
           Settings
         </a>
       </div>
+    */}
     </aside>
   );
 }

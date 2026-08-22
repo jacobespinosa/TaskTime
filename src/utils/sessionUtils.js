@@ -76,3 +76,17 @@ export function groupSessionsByWeekAndDay(sessions) {
 
     return groupedSessions;
 }
+
+export function getSessionsByProjectId(sessions, projectId) {
+    return sessions.filter(session => session.projectId === projectId);
+}
+
+export function getSessionsByDate(sessions, dateKey) {
+    return sessions.filter(session => session.date === dateKey);
+}
+
+export function getTotalSessionDuration(sessions) {
+    return sessions.reduce((total, session) => {
+        return total + session.durationSeconds;
+    }, 0);
+}

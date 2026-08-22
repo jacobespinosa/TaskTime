@@ -21,7 +21,7 @@ function ProjectConsistency({projects, tasksByDate, projectActivityByDate}) {
         const dateKey = getDateKey(startOfMonth);
         const isToday = dateKey === todayKey;
 
-        const isDone = (projectActivityByDate[dateKey] ?? []).includes(currentProject.id);
+        const isDone = (projectActivityByDate[dateKey] ?? []).includes(currentProject?.id);
         const day = startOfMonth.getDate();
         calendarDays.push({day, isDone, isToday});
 
@@ -62,7 +62,7 @@ function ProjectConsistency({projects, tasksByDate, projectActivityByDate}) {
                             className='project-filter'
                             onClick={() => setIsProjectFilterOpen(prev => !prev)}
                     >
-                        {currentProject.name}
+                        {currentProject?.name ?? "No Project"}
                         <span className='filter-icon'>
                             {isProjectFilterOpen
                                         ? <FontAwesomeIcon icon={faChevronUp}/>

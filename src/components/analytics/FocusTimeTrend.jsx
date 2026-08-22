@@ -21,7 +21,7 @@ function FocusTimeTrend({timeByDate}) {
 
     const yearlyData = getYearlyFocusTimeData(timeByDate);
     const sortedYearlyDataByTime = yearlyData.toSorted((a, b) => b.time - a.time);
-    const yearlyDataMostTime = sortedYearlyDataByTime[0].time;
+    const yearlyDataMostTime = sortedYearlyDataByTime[0]?.time ?? 0;
     const yearlyMaxHours = Math.ceil(yearlyDataMostTime);
 
     let interval = 5;

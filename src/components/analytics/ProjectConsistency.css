@@ -5,6 +5,7 @@
     background-color: var(--surface);
     padding: 1rem;
     border: 1px solid var(--border);
+    width: 450px;
 }
 
 .project-consistency-filters {

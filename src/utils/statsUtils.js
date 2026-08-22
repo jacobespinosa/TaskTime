@@ -2,6 +2,7 @@ import { getCurrentMonthStart, getCurrentYearStart, getTodayDate, getWeekStart }
 import { getWeeklyTotalTime } from "./timeUtils";
 import { getDateKey } from "./dateUtils";
 import { calculateGoalPercentage } from "./mathUtils";
+import { getSessionsByDate, getSessionsByProjectId, getTotalSessionDuration } from "./sessionUtils";
 
 export function getAverageMonthlyTimeGoalPercentage(timeByDate, weeklyTimeGoals, monthStart) {
     const today = getTodayDate();
@@ -321,4 +322,101 @@ export function getWeekTimeStats(tasksByDate, weekStart) {
     }
 
     return { totalTasks, totalTasksCompleted };
+}
+
+export function getYearlyProjectHeatmapData(year, sessions, projectId) {
+    let projectSessions;
+
+    if (projectId === 0) {
+        // Get all projects
+        projectSessions = sessions.filter(
+            session => session.projectId !== 0
+        );
+    }
+    else {
+        projectSessions = getSessionsByProjectId(sessions, projectId);
+    }
+
+    const weeks = [];
+
+    const yearStart = new Date(year, 0, 1);
+    const yearEnd = new Date(year, 11, 31);
+
+    const startDate = new Date(yearStart);
+
+    const day = startDate.getDay();
+    const daysSinceMonday = day === 0 ? 6 : day - 1;
+
+    startDate.setDate(startDate.getDate() - daysSinceMonday);
+
+    const currentDate = new Date(startDate);
+
+    while (currentDate <= yearEnd) {
+        const week = [];
+
+        for (let i = 0; i < 7; i++) {
+            const date = new Date(currentDate);
+            const dateKey = getDateKey(date);
+
+            const isInYear = date.getFullYear() === year;
+
+            const filteredSessions = getSessionsByDate(
+                projectSessions,
+                dateKey
+            );
+
+            const totalSessionTime = getTotalSessionDuration(
+                filteredSessions
+            );
+
+            let tier = 0;
+
+            if (totalSessionTime > 0) {
+                if (projectId === 0) {
+                    // All projects
+                    if (totalSessionTime < 3600) {
+                        tier = 1;
+                    }
+                    else if (totalSessionTime < 7200) {
+                        tier = 2;
+                    }
+                    else if (totalSessionTime < 14400) {
+                        tier = 3;
+                    }
+                    else {
+                        tier = 4;
+                    }
+                }
+                else {
+                    // Individual project
+                    if (totalSessionTime < 1800) {
+                        tier = 1;
+                    }
+                    else if (totalSessionTime < 3600) {
+                        tier = 2;
+                    }
+                    else if (totalSessionTime < 7200) {
+                        tier = 3;
+                    }
+                    else {
+                        tier = 4;
+                    }
+                }
+            }
+
+            week.push({
+                date,
+                dateKey,
+                isInYear,
+                totalSessionTime,
+                tier
+            });
+
+            currentDate.setDate(currentDate.getDate() + 1);
+        }
+
+        weeks.push(week);
+    }
+
+    return weeks;
 }

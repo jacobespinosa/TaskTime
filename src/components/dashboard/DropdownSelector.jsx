@@ -25,7 +25,7 @@ function DropdownSelector({projects, currentProjectId, setCurrentProjectId,
             <p className="project-selector-title">Current Project</p>
             <div className="project-selector" onClick={() => setSelectorMode("tasks")}>
                 <span className="current-project-name">
-                    <span className="color-dot" style={{"color": `${currentProject.color}`}}>●</span>
+                    <span className="color-dot" style={{"color": `${currentProject?.color}`}}>●</span>
                     {currentProject?.name}
                 </span>
                 <button className="selector-change-project-btn"
