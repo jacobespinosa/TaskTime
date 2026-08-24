@@ -47,3 +47,26 @@
 .sidebar-link.active {
     background-color: var(--background);
 }
+
+.demo-warning {
+    margin: auto 0.75rem 0.75rem;
+    padding: 0.75rem;
+
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    background-color: var(--surface);
+}
+
+.demo-label {
+    text-transform: uppercase;
+    margin-bottom: 0.2rem;
+    color: var(--blue);
+    font-size: 0.75rem;
+    font-weight: 600;
+}
+
+.demo-warning p {
+    color: var(--text-secondary);
+    font-size: 0.8rem;
+    line-height: 1.4;
+}

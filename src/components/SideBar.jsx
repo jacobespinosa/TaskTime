@@ -39,6 +39,12 @@ function SideBar() {
           Analytics
         </NavLink>
       </div>
+      {isDemo && (
+        <div className='demo-warning'>
+          <span className='demo-label'>Demo Mode</span>
+          <p>You're viewing sample data.</p>
+        </div>
+      )}
     {/*
       <div className="sidebar-section">
         <p className="sidebar-title">General</p>
