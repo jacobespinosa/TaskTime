@@ -12,7 +12,6 @@ function ProjectDetails({project, tasks, handleProjectNameChange,
                          sortConfig, handleSort,
                          handleEditTask, handleAddTask, handleDeleteTask, 
                          handleToggleTask, setCurrentProjectId}) {
-    setCurrentProjectId(project.id);
     const todayDateKey = getDateKey(getTodayDate());
     const sortedTasks = tasks.toSorted((a, b) => {
         const { field, direction } = sortConfig;
@@ -116,7 +115,7 @@ function ProjectDetails({project, tasks, handleProjectNameChange,
                         </h1>
                         <button type="button"
                                 className={`project-tasks-add-task-btn ${project.isArchived? "btn-disabled" : ""}`}
-                                onClick={() => handleAddTask(todayDateKey)}
+                                onClick={() => handleAddTask(todayDateKey, project.id)}
                                 disabled={project.isArchived}
                                 title={project.isArchived ? "Restore this project to add tasks" : ""}
                         >

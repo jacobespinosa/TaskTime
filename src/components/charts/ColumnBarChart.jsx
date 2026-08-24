@@ -37,7 +37,7 @@ function ColumnBarChart({title, data, maxValue, getKey, getValue,
                         return (
                         <li key={getKey(item)} className='column-bar-chart-item'>
                             <div className='bar' style={{"width": `${columnWidth}`}}>
-                                {getTopLabel(item) && (
+                                {getTopLabel(item) !== null && getTopLabel(item) !== undefined && (
                                     <div className='bar-label-top'
                                         style={{"bottom": `calc(${percent}% + 8px)`}}>
                                         {getTopLabel(item)}

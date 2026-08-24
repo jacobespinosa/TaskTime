@@ -9,7 +9,7 @@ function ProjectHeatmap({projects, sessions}) {
 
     const [ currentYear, setCurrentYear ] = useState(today.getFullYear());
     const [ isProjectFilterOpen, setIsProjectFilterOpen ] = useState(false);
-    const [ currentProject, setCurrentProject ] = useState(projects[1]);
+    const [ currentProject, setCurrentProject ] = useState(projects[0]);
 
     function handlePrevYear() {
         setCurrentYear(prev => prev - 1);

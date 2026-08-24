@@ -6,7 +6,8 @@ import DropdownSelector from './DropdownSelector';
 function Timer({projects, setProjects, timeByDate, setTimeByDate,
                 currentProjectId, setCurrentProjectId, selectedTask,
                 setSelectedTask, tasksByDate, handleAddTask,
-                setIsCreateProjectOpen, setSessions, timer, setTimer }) {
+                setIsCreateProjectOpen, setSessions, timer, setTimer,
+                handleAddTaskForCurrentProject }) {
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
     
     const today = new Date();
@@ -121,7 +122,7 @@ function Timer({projects, setProjects, timeByDate, setTimeByDate,
                                 setCurrentProjectId={setCurrentProjectId}
                                 tasksByDate={tasksByDate}
                                 setSelectedTask={setSelectedTask}
-                                handleAddTask={handleAddTask}
+                                handleAddTaskForCurrentProject={handleAddTaskForCurrentProject}
                                 setIsDropdownOpen={setIsDropdownOpen}
                                 setIsCreateProjectOpen={setIsCreateProjectOpen}
                             />

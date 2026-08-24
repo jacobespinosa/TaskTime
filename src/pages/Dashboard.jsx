@@ -21,7 +21,7 @@ function Dashboard({projects, setProjects, tasksByDate, setTasksByDate,
                     timeByDate, setTimeByDate, taskActions, taskModalState,
                     newTask, sessions, setSessions, currentProjectId, setCurrentProjectId,
                     isCreateProjectOpen, setIsCreateProjectOpen, weeklyTimeGoals, setWeeklyTimeGoals,
-                    handleEditSession, timer, setTimer}) {
+                    handleEditSession, timer, setTimer, handleAddTaskForCurrentProject}) {
 
   const {
       handleCreateTask,
@@ -77,6 +77,7 @@ function Dashboard({projects, setProjects, tasksByDate, setTasksByDate,
             setSessions={setSessions}
             timer={timer}
             setTimer={setTimer}
+            handleAddTaskForCurrentProject={handleAddTaskForCurrentProject}
           />
 
           <div className="dashboard-graphs">

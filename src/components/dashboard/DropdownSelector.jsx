@@ -2,7 +2,7 @@ import './DropdownSelector.css';
 import { useState } from 'react';
 
 function DropdownSelector({projects, currentProjectId, setCurrentProjectId,
-                          tasksByDate, setSelectedTask, handleAddTask,
+                          tasksByDate, setSelectedTask, handleAddTaskForCurrentProject,
                           setIsDropdownOpen, setIsCreateProjectOpen}) {
     const [selectorMode, setSelectorMode] = useState("tasks");
 
@@ -80,7 +80,7 @@ function DropdownSelector({projects, currentProjectId, setCurrentProjectId,
                     <button type="button" 
                             className="selector-add-task-btn"
                             onClick={() => {
-                                handleAddTask(todayDatekey);
+                                handleAddTaskForCurrentProject(todayDatekey);
                                 setIsDropdownOpen(false);
                             }}
                     >

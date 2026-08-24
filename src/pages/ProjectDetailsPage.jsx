@@ -1,5 +1,5 @@
 import './ProjectDetailsPage.css';
-import { useParams } from 'react-router-dom';
+import { useLocation, useParams } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronRight } from '@fortawesome/free-solid-svg-icons';
 import { useNavigate } from 'react-router-dom';
@@ -19,6 +19,7 @@ function ProjectDetailsPage({projects, setProjects, tasksByDate, taskActions, se
 
     const { projectId } = useParams();
     const navigate = useNavigate();
+    const location = useLocation();
 
     const [sortConfig, setSortConfig] = useState({
         field: "name",
@@ -127,6 +128,9 @@ function ProjectDetailsPage({projects, setProjects, tasksByDate, taskActions, se
         );
     }
 
+    const isDemo = location.pathname.startsWith("/demo");
+    const base = isDemo ? "/demo" : "";
+
     return (
         <main className="project-details">
             <section className='project-details-content'>
@@ -134,7 +138,7 @@ function ProjectDetailsPage({projects, setProjects, tasksByDate, taskActions, se
                     <nav className='breadcrumbs' aria-label="Breadcrumb">
                         <button type="button"
                                 className='breadcrumb-link'
-                                onClick={() => navigate("/projects")}
+                                onClick={() => navigate(`${base}/projects`)}
                         >
                             Projects
                         </button>

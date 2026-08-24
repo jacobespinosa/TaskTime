@@ -1,11 +1,20 @@
 import { getDateKey } from "../utils/dateUtils";
 
-function getRandomInt(min, max) {
-    return Math.floor(Math.random() * (max - min + 1)) + min;
+function createSeededRandom(seed) {
+    let value = seed;
+
+    return function () {
+        value = (value * 9301 + 49297) % 233280;
+        return value / 233280;
+    };
 }
 
-function getRandomItem(array) {
-    return array[Math.floor(Math.random() * array.length)];
+function getRandomInt(random, min, max) {
+    return Math.floor(random() * (max - min + 1)) + min;
+}
+
+function getRandomItem(random, array) {
+    return array[Math.floor(random() * array.length)];
 }
 
 function getEndOfWeek(date) {
@@ -33,7 +42,7 @@ export function generateDemoProjects() {
         {
             id: 1,
             name: "Portfolio",
-            color: "#DC143C",
+            color: "#69BE2C",
             timeSpent: 0,
             isArchived: false,
             progressTracking: {
@@ -46,7 +55,7 @@ export function generateDemoProjects() {
         {
             id: 2,
             name: "LeetCode",
-            color: "#69BE28",
+            color: "#DC143C",
             timeSpent: 0,
             isArchived: false,
             progressTracking: {
@@ -261,7 +270,7 @@ const projectTaskNames = {
     ]
 };
 
-export function generateDemoTasks(daysBack = 180) {
+export function generateDemoTasks(random, daysBack = 180) {
     const tasksByDate = {};
 
     const today = new Date();
@@ -282,18 +291,18 @@ export function generateDemoTasks(daysBack = 180) {
         const isFuture = date > today;
         const isToday = date.getTime() === today.getTime();
 
-        if (!isFuture && Math.random() < 0.25) {
+        if (!isFuture && random() < 0.25) {
             currentDate.setDate(currentDate.getDate() + 1);
             continue;
         }
 
         const dateKey = getDateKey(date);
-        const numberOfTasks = getRandomInt(1, 4);
+        const numberOfTasks = getRandomInt(random, 1, 4);
 
         const tasks = [];
 
         for (let j = 0; j < numberOfTasks; j++) {
-            const projectId = getRandomInt(0, 3);
+            const projectId = getRandomInt(random, 0, 3);
 
             const daysOld = Math.floor(
                 (today - date) / (1000 * 60 * 60 * 24)
@@ -302,29 +311,27 @@ export function generateDemoTasks(daysBack = 180) {
             let isDone;
 
             if (isFuture) {
-                // Future tasks should never be completed
                 isDone = false;
             }
             else if (isToday) {
-                isDone = Math.random() < 0.45;
+                isDone = random() < 0.45;
             }
-            else if (daysOld <= 30) {
-                isDone = Math.random() < 0.9;
+            else if (daysOld <= 7) {
+                isDone = random() < 0.9;
             }
             else {
                 isDone = true;
             }
 
-            // Simulate old deleted tasks
-            if (daysOld > 30 && Math.random() < 0.25) {
+            if (daysOld > 30 && random() < 0.25) {
                 continue;
             }
 
             tasks.push({
                 id: taskId++,
-                name: getRandomItem(projectTaskNames[projectId]),
+                name: getRandomItem(random, projectTaskNames[projectId]),
                 projectId,
-                time: getRandomItem([30, 45, 60, 90, 120]),
+                time: getRandomItem(random, [30, 45, 60, 90, 120]),
                 isDone,
                 dueDate: date.toISOString().split("T")[0],
                 dateCompleted: isDone
@@ -343,7 +350,7 @@ export function generateDemoTasks(daysBack = 180) {
     return tasksByDate;
 }
 
-export function generateDemoSessions(daysBack = 120) {
+export function generateDemoSessions(random, daysBack = 120) {
     const sessions = [];
 
     const today = new Date();
@@ -359,22 +366,22 @@ export function generateDemoSessions(daysBack = 120) {
 
         const isThisWeek = daysAgo <= 6;
 
-        if (!isThisWeek && Math.random() > 0.75) {
+        if (!isThisWeek && random() > 0.75) {
             continue;
         }
 
         const sessionCount = isThisWeek
-            ? getRandomInt(1, 3)
-            : getRandomInt(1, 2);
+            ? getRandomInt(random, 1, 3)
+            : getRandomInt(random, 1, 2);
 
         for (let j = 0; j < sessionCount; j++) {
-            const projectId = getRandomInt(0, 3);
+            const projectId = getRandomInt(random, 0, 3);
 
-            const durationMinutes = getRandomInt(25, 120);
+            const durationMinutes = getRandomInt(random, 25, 120);
             const durationSeconds = durationMinutes * 60;
 
-            const startHour = getRandomInt(8, 19);
-            const startMinute = getRandomItem([0, 15, 30, 45]);
+            const startHour = getRandomInt(random, 8, 19);
+            const startMinute = getRandomItem(random, [0, 15, 30, 45]);
 
             const startTime = new Date(date);
             startTime.setHours(startHour, startMinute, 0, 0);
@@ -448,7 +455,7 @@ export function addProjectTimeSpent(projects, sessions) {
     });
 }
 
-export function generateDemoWeeklyGoals(weeksBack = 16) {
+export function generateDemoWeeklyGoals(random, weeksBack = 16) {
     const goals = {};
 
     const today = new Date();
@@ -468,8 +475,7 @@ export function generateDemoWeeklyGoals(weeksBack = 16) {
             currentMonday.getDate() - i * 7
         );
 
-        // 15–25 hour weekly goal
-        const goalHours = getRandomInt(15, 25);
+        const goalHours = getRandomInt(random, 15, 25);
 
         goals[getDateKey(week)] = goalHours * 60 * 60;
     }
@@ -477,8 +483,13 @@ export function generateDemoWeeklyGoals(weeksBack = 16) {
     return goals;
 }
 
-export function generateDemoData() {
-    const sessions = generateDemoSessions(180);
+export function generateDemoData(seed = 12345) {
+    const random = createSeededRandom(seed);
+
+    const sessions = generateDemoSessions(
+        random,
+        180
+    );
 
     let projects = generateDemoProjects();
 
@@ -487,7 +498,10 @@ export function generateDemoData() {
         sessions
     );
 
-    const tasksByDate = generateDemoTasks(180);
+    const tasksByDate = generateDemoTasks(
+        random,
+        180
+    );
 
     const timeByDate =
         generateTimeByDateFromSessions(sessions);
@@ -496,7 +510,10 @@ export function generateDemoData() {
         generateProjectActivityFromSessions(sessions);
 
     const weeklyTimeGoals =
-        generateDemoWeeklyGoals(26);
+        generateDemoWeeklyGoals(
+            random,
+            26
+        );
 
     return {
         projects,

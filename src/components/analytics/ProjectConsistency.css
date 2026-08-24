@@ -26,11 +26,15 @@
 .project-consistency-filter-menu {
     display: flex;
     flex-direction: column;
+
     z-index: 999;
     left: 0px;
     top: 20px;
     position: absolute;
-    width: 100px;
+
+    width: max-content;
+    min-width: 0;
+    
     border: 1px solid var(--border);
     border-bottom: none;
     background: var(--surface);
@@ -39,11 +43,19 @@
 .project-consistency-filter-menu button {
     font-size: inherit;
     font-family: inherit;
+
+    width: 100%;
+    min-width: 0;
+
     border: none;
     border-bottom: 1px solid var(--border);
     background-color: var(--surface);
     padding: 0.7rem 1.2rem;
     cursor: pointer;
+
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
 }
 
 .project-consistency-filter-menu button:hover {

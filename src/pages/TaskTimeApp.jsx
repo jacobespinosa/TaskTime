@@ -16,6 +16,7 @@ import { getLocalStorage, setLocalStorage } from '../utils/localStorageUtils';
 import { generateDemoData } from '../data/demoData';
 
 function TaskTimeApp({ demoMode = false }) {
+    const DEMO_SEED = 14;
     const [taskModalMode, setTaskModalMode] = useState("add");
     const [isTaskModalOpen, setIsTaskModalOpen] = useState(false);
     const [selectedDateKey, setSelectedDateKey] = useState("");
@@ -29,7 +30,7 @@ function TaskTimeApp({ demoMode = false }) {
         elapsedSeconds: 0,
     });
 
-    const demoData = generateDemoData();
+    const demoData = generateDemoData(DEMO_SEED);
 
     const defaultProjects = [
         {
@@ -91,6 +92,7 @@ function TaskTimeApp({ demoMode = false }) {
     });
 
     const [currentProjectId, setCurrentProjectId] = useState(projects[0].id);
+    const [taskModalProjectId, setTaskModalProjectId] = useState(projects[0].id);
 
     useEffect(() => {
         if (demoMode) return;
@@ -228,10 +230,21 @@ function TaskTimeApp({ demoMode = false }) {
         }));
     }
 
-    function handleAddTask(dateKey) {
+    function handleAddTask(dateKey, projectId = 0) {
         setTaskModalMode("add");
         setSelectedDateKey(dateKey);
         setNewTask(null);
+        setTaskModalProjectId(projectId)
+        setIsTaskModalOpen(true);
+    }
+
+    function handleAddTaskForCurrentProject(dateKey) {
+        setTaskModalMode("add");
+        setSelectedDateKey(dateKey);
+        setNewTask(null);
+
+        setTaskModalProjectId(currentProjectId);
+
         setIsTaskModalOpen(true);
     }
 
@@ -344,6 +357,7 @@ function TaskTimeApp({ demoMode = false }) {
                                 setWeeklyTimeGoals={setWeeklyTimeGoals}
                                 handleEditSession={handleEditSession}
                                 timer={timer} setTimer={setTimer}
+                                handleAddTaskForCurrentProject={handleAddTaskForCurrentProject}
                             />
                         } 
                     />
@@ -414,12 +428,12 @@ function TaskTimeApp({ demoMode = false }) {
                     mode={taskModalMode}
                     task={newTask}
                     onClose={() => {
-                        setCurrentProjectId(projects[0].id);
+                        setTaskModalProjectId(0);
                         setIsTaskModalOpen(false);
                     }}
                     onSubmit={taskModalMode === "add" 
                                 ? handleCreateTask : handleUpdateTask}
-                    currentProjectId={currentProjectId}
+                    currentProjectId={taskModalProjectId}
                 />
             )}
 

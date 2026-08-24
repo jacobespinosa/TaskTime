@@ -112,7 +112,7 @@
 }
 
 .delete-btn:hover {
-    color: var(--black);
+    color: var(--red);
 }
 
 .card-footing {
