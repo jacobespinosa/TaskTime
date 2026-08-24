@@ -1,11 +1,12 @@
 import './WeeklyGoalProgress.css';
 import ProgressBar from '../charts/ProgressBar';
 import { formatMinutesHH, getWeeklyTotalTime } from '../../utils/timeUtils';
-import { getCurrentWeekStart, getDateKey, getTodayDate, getWeekStart } from '../../utils/dateUtils';
+import { getCurrentWeekRange, getCurrentWeekStart, getDateKey, getTodayDate, getWeekStart } from '../../utils/dateUtils';
 import { calculateGoalPercentage } from '../../utils/mathUtils';
 import { faFontAwesome } from '@fortawesome/free-solid-svg-icons';
 import { faCheck } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { formatMinutesHHMM } from '../../utils/timeUtils';
 
 function WeeklyGoalProgress({timeByDate, weeklyTimeGoals}) {
     const today = getTodayDate();
@@ -29,8 +30,13 @@ function WeeklyGoalProgress({timeByDate, weeklyTimeGoals}) {
         const weeklyTime = getWeeklyTotalTime(timeByDate, current);
         const weeklyTimeGoal = weeklyTimeGoals[currentDateKey] ?? 0;
 
+
         const percent = calculateGoalPercentage(weeklyTime, weeklyTimeGoal);
-        pastWeeksTimePercentData.unshift(percent);
+        pastWeeksTimePercentData.unshift({
+            percent: percent,
+            totalTime: weeklyTime / 60, // mins
+            weekRange: getCurrentWeekRange(current)
+        });
 
         current.setDate(current.getDate() + 7);
     }
@@ -67,19 +73,20 @@ function WeeklyGoalProgress({timeByDate, weeklyTimeGoals}) {
             <div className='past-weekly-goal-progress'>
                 <p className='title'>Past 8 Weeks</p>
                 <ul className='goals'>
-                    {pastWeeksTimePercentData.map((percent, index) => {
+                    {pastWeeksTimePercentData.map((week, index) => {
                         return (
                             <li key={index} className='past-week-progress-bar'>
                                 <ProgressBar
-                                    percent={percent}
+                                    percent={week.percent}
                                     width="200px"
                                     height="20px"
-                                    fillColor={percent >= 100 ? "var(--green)": "var(--blue)"}
+                                    fillColor={week.percent >= 100 ? "var(--green)": "var(--blue)"}
                                     backgroundColor="var(--background)"
+                                    hoverTitle={`${week.weekRange} • ${formatMinutesHHMM(week.totalTime)}`}
                                 />
                                 <div className={`percent`}>
-                                    {percent < 100 && <p>{percent.toFixed(0)}%</p>}
-                                    {percent >= 100 &&
+                                    {week.percent < 100 && <p>{week.percent.toFixed(0)}%</p>}
+                                    {week.percent >= 100 &&
                                         <FontAwesomeIcon icon={faCheck} className='checkmark'/>
                                     }
                                 </div>

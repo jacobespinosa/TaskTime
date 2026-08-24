@@ -1,6 +1,6 @@
 import './ProgressBar.css';
 
-function ProgressBar({percent, width, height, fillColor, backgroundColor}) {
+function ProgressBar({percent, width, height, fillColor, backgroundColor, hoverTitle}) {
     return (
         <div className='progress-bar-container'
             style={{
@@ -8,6 +8,7 @@ function ProgressBar({percent, width, height, fillColor, backgroundColor}) {
                 height,
                 backgroundColor
             }}
+            title={hoverTitle}
         >
             <div className='fill'
                 style={{
