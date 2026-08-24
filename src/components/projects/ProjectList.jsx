@@ -1,6 +1,6 @@
 import './ProjectList.css';
 import { useState, useEffect, useRef } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { formatMinutesHHMMIncludeZero } from '../../utils/timeUtils';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronDown, faChevronUp } from '@fortawesome/free-solid-svg-icons';
@@ -10,6 +10,7 @@ import { calculateGoalPercentage } from '../../utils/mathUtils';
 
 function ProjectList({projects, setProjects, setTasksByDate, setSessions}) {
     const navigate = useNavigate();
+    const location = useLocation();
     const [filterType, setFilterType] = useState("active");
     const [isFilterDropdownOpen, setIsFilterDropdownOpen] = useState(false);
     const [isProjectConfirmDeleteModalOpen, setIsProjectConfirmDeleteModalOpen] = useState(false);
@@ -70,8 +71,12 @@ function ProjectList({projects, setProjects, setTasksByDate, setSessions}) {
         }
     }, [])
 
+
+    const isDemo = location.pathname.startsWith("/demo");
+    const base = isDemo ? "/demo" : "";
+
     function handleSelectProject(projectId) {
-        navigate(`/projects/${projectId}`);
+        navigate(`${base}/projects/${projectId}`);
     }
 
     function handleSort(field) {

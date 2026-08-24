@@ -19,7 +19,6 @@ export function getWeeklyProjectStats(projects, sessions) {
         const date = new Date(weekStart);
 
         for (let index = 0; index < 7; index++) {
-            date.setDate(date.getDate() + 1);
 
             const dateKey = date.toLocaleDateString('en-US');
             const todaySessions = sessions.filter(session => session.date === dateKey);
@@ -27,7 +26,9 @@ export function getWeeklyProjectStats(projects, sessions) {
             todaySessions.forEach((session => {
                 const timeSpent = (session?.durationSeconds ?? 0) / 60;
                 projectMap.set(session.projectId, timeSpent + (projectMap.get(session.projectId) || 0));
-            }))
+            }));
+
+            date.setDate(date.getDate() + 1);
         };
 
         for (const [id, time] of projectMap) {
