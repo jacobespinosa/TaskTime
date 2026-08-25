@@ -69,9 +69,6 @@ function AddTaskModal({mode, task, onClose, onSubmit, projects, currentProjectId
                             <option value="210">3.5 hours</option>
                             <option value="240">4 hours</option>
                             <option value="300">5 hours</option>
-                            <option value="360">6 hours</option>
-                            <option value="420">7 hours</option>
-                            <option value="480">8 hours</option>
                         </select>
                     </div>
                     <div className="task-form-group">
