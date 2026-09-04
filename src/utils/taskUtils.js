@@ -125,5 +125,5 @@ export function getTaskDueDateText(task) {
 }
 
 export function getProjectTasks(projectId, tasksByDate) {
-    return Object.values(tasksByDate).flat().filter(task => task.projectId = projectId);
+    return Object.values(tasksByDate).flat().filter(task => task.projectId === projectId);
 }

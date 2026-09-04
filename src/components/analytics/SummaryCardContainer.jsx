@@ -6,8 +6,8 @@ import { faChevronUp, faChevronDown } from '@fortawesome/free-solid-svg-icons';
 import { formatMinutesHHMMIncludeZero, getMonthlyTotalTime, getWeeklyTotalTime, getYearlyTotalTime } from '../../utils/timeUtils';
 import { getCurrentMonthStart, getCurrentWeekStart, getCurrentYearStart, getDateKey, getDaysElapsed } from '../../utils/dateUtils';
 import { calculateGoalPercentage } from '../../utils/mathUtils';
-import { getAverageMonthlyTimeGoalPercentage, getAverageYearlyTimeGoalPercentage, getMonthlyTaskStats, getYearlyTaskStats } from '../../utils/statsUtils';
-import { getWeeklyTaskStats } from '../../utils/taskUtils';
+import { getAverageMonthlyTimeGoalPercentage, getAverageYearlyTimeGoalPercentage, 
+         getMonthlyTaskCompletion, getYearlyTaskCompletion, getWeeklyTaskCompletion } from '../../utils/statsUtils';
 
 function SummaryCardContainer({timeByDate, weeklyTimeGoals, tasksByDate}) {
     const [dateRangeFilter, setDateRangeFilter] = useState("This Month");
@@ -21,10 +21,10 @@ function SummaryCardContainer({timeByDate, weeklyTimeGoals, tasksByDate}) {
     const totalMonthlyTime = getMonthlyTotalTime(timeByDate, monthStart);
     const totalYearlyTime = getYearlyTotalTime(timeByDate, yearStart);
 
-    const { totalTasks, totalTasksCompleted } = getWeeklyTaskStats(tasksByDate);
-    const { totalMonthlyTasks, totalMonthlyTasksCompleted } = getMonthlyTaskStats(tasksByDate, monthStart);
-    const { totalYearlyTasks, totalYearlyTasksCompleted } = getYearlyTaskStats(tasksByDate, yearStart);
-
+    const { totalTasks, totalTasksCompletedOnTime } = getWeeklyTaskCompletion(tasksByDate);
+    const { totalMonthlyTasks, totalMonthlyTasksCompletedOnTime } = getMonthlyTaskCompletion(tasksByDate, monthStart);
+    const { totalYearlyTasks, totalYearlyTasksCompletedOnTime } = getYearlyTaskCompletion(tasksByDate, yearStart);
+console.log(totalMonthlyTasks, totalMonthlyTasksCompletedOnTime)
     const weeklyTimeGoal = weeklyTimeGoals[weekStartKey];
 
     const weeklyTimeGoalPercent = calculateGoalPercentage(totalWeeklyTime, weeklyTimeGoal);
@@ -32,9 +32,9 @@ function SummaryCardContainer({timeByDate, weeklyTimeGoals, tasksByDate}) {
     const monthlyTimeGoal = getAverageMonthlyTimeGoalPercentage(timeByDate, weeklyTimeGoals, monthStart);
     const yearlyTimeGoal = getAverageYearlyTimeGoalPercentage(timeByDate, weeklyTimeGoals, yearStart);
 
-    const weeklyTaskGoalPercent = calculateGoalPercentage(totalTasksCompleted, totalTasks);
-    const monthlyTaskGoalPercent = calculateGoalPercentage(totalMonthlyTasksCompleted, totalMonthlyTasks);
-    const yearlyTaskGoalPercent = calculateGoalPercentage(totalYearlyTasksCompleted, totalYearlyTasks);
+    const weeklyTaskGoalPercent = calculateGoalPercentage(totalTasksCompletedOnTime, totalTasks);
+    const monthlyTaskGoalPercent = calculateGoalPercentage(totalMonthlyTasksCompletedOnTime, totalMonthlyTasks);
+    const yearlyTaskGoalPercent = calculateGoalPercentage(totalYearlyTasksCompletedOnTime, totalYearlyTasks);
 
     const daysElapsed = dateRangeFilter === "This Week"
                         ? getDaysElapsed(weekStart)

@@ -1,4 +1,4 @@
-import { getCurrentMonthStart, getCurrentYearStart, getTodayDate, getWeekStart } from "./dateUtils";
+import { getCurrentMonthStart, getCurrentWeekStart, getCurrentYearStart, getTodayDate, getWeekStart, getYesterdayDate } from "./dateUtils";
 import { getWeeklyTotalTime } from "./timeUtils";
 import { getDateKey } from "./dateUtils";
 import { calculateGoalPercentage } from "./mathUtils";
@@ -70,11 +70,40 @@ export function getAverageTimeGoalPercentage(timeByDate, weeklyTimeGoals, rangeS
     return weekCount > 0 ? totalPercentage / weekCount : 0;
 }
 
-export function getMonthlyTaskStats(tasksByDate, monthStart) {
+export function getWeeklyTaskCompletion(tasksByDate) {
+
+    let totalTasks = 0;
+    let totalTasksCompletedOnTime = 0;
+
     const today = getTodayDate();
+    const currentWeekStart = getCurrentWeekStart();
+    const weekStart = new Date(currentWeekStart)
+
+    for (let i = 0; i < 7 && weekStart < today; i++) {
+        const dateKey = getDateKey(weekStart);
+        const tasks = tasksByDate[dateKey] ?? [];
+
+        totalTasks += tasks.length;
+
+        for (const task of tasks) {
+            if (task.isDone && task.dateCompleted === dateKey) {
+                totalTasksCompletedOnTime++;
+            }
+        }
+        weekStart.setDate(weekStart.getDate() + 1);
+    }
+
+    return {
+        totalTasks,
+        totalTasksCompletedOnTime
+    };
+}
+
+export function getMonthlyTaskCompletion(tasksByDate, monthStart) {
+    const yesterday = getYesterdayDate();
 
     let totalMonthlyTasks = 0;
-    let totalMonthlyTasksCompleted = 0;
+    let totalMonthlyTasksCompletedOnTime = 0;
 
     const currentDate = new Date(monthStart);
     currentDate.setHours(0, 0, 0, 0);
@@ -85,26 +114,29 @@ export function getMonthlyTaskStats(tasksByDate, monthStart) {
         0
     );
 
-    const endDate = monthEnd < today ? monthEnd : today;
+    const endDate = monthEnd < yesterday ? monthEnd : yesterday;
     while (currentDate <= endDate) {
         const dateKey = getDateKey(currentDate);
 
-        totalMonthlyTasks += (tasksByDate[dateKey] ?? []).length;
+        const tasks = tasksByDate[dateKey] ?? [];
+        totalMonthlyTasks += tasks.length;
 
-        for (let task of (tasksByDate[dateKey] ?? [])) {
-            totalMonthlyTasksCompleted += task.isDone;
+        for (const task of tasks) {
+            if (task.isDone && task.dateCompleted === dateKey) {
+                totalMonthlyTasksCompletedOnTime++;
+            }
         }
         currentDate.setDate(currentDate.getDate() + 1);
     }
 
-    return { totalMonthlyTasks, totalMonthlyTasksCompleted };
+    return { totalMonthlyTasks, totalMonthlyTasksCompletedOnTime };
 }
 
-export function getYearlyTaskStats(tasksByDate, yearStart) {
-    const today = getTodayDate();
+export function getYearlyTaskCompletion(tasksByDate, yearStart) {
+    const yesterday = getYesterdayDate()
 
     let totalYearlyTasks = 0;
-    let totalYearlyTasksCompleted = 0;
+    let totalYearlyTasksCompletedOnTime = 0;
 
     const currentDate = new Date(yearStart);
     currentDate.setHours(0, 0, 0, 0);
@@ -115,20 +147,23 @@ export function getYearlyTaskStats(tasksByDate, yearStart) {
         0
     );
 
-    const endDate = yearEnd < today ? yearEnd : today;
+    const endDate = yearEnd < yesterday ? yearEnd : yesterday;
 
     while (currentDate <= endDate) {
         const dateKey = getDateKey(currentDate);
 
-        totalYearlyTasks += (tasksByDate[dateKey] ?? []).length;
+        const tasks = tasksByDate[dateKey] ?? [];
+        totalYearlyTasks += tasks.length;
 
-        for (let task of (tasksByDate[dateKey] ?? [])) {
-            totalYearlyTasksCompleted += task.isDone;
+        for (const task of tasks) {
+            if (task.isDone && task.dateCompleted === dateKey) {
+                totalYearlyTasksCompletedOnTime++;
+            }
         }
         currentDate.setDate(currentDate.getDate() + 1);
     }
 
-    return { totalYearlyTasks, totalYearlyTasksCompleted };
+    return { totalYearlyTasks, totalYearlyTasksCompletedOnTime };
 }
 
 /* Return Array of data objects { day, time } */
