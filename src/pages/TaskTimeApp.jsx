@@ -14,6 +14,7 @@ import { useEffect } from 'react';
 import { getDateKey, getTodayDate } from '../utils/dateUtils';
 import { getLocalStorage, setLocalStorage } from '../utils/localStorageUtils';
 import { generateDemoData } from '../data/demoData';
+import { formatSecondsHHMMSS } from "../utils/timeUtils";
 
 function TaskTimeApp({ demoMode = false }) {
     const DEMO_SEED = 14;
@@ -155,6 +156,14 @@ function TaskTimeApp({ demoMode = false }) {
 
         return () => clearInterval(intervalId);
     }, [timer.isRunning, timer.startTime]);
+
+    useEffect(() => {
+        if (timer.isRunning) {
+            document.title = `${formatSecondsHHMMSS(timer.elapsedSeconds)} • TaskTime`
+        } else {
+            document.title = "TaskTime";
+        }
+    }, [timer.elapsedSeconds, timer.isRunning]);
 
     function handleCreateTask(taskName, projectId, estimatedTime, dueDate) {
         setTasksByDate(prev => ({
