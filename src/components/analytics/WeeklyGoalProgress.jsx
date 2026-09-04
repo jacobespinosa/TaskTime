@@ -6,7 +6,7 @@ import { calculateGoalPercentage } from '../../utils/mathUtils';
 import { faFontAwesome } from '@fortawesome/free-solid-svg-icons';
 import { faCheck } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { formatMinutesHHMM } from '../../utils/timeUtils';
+import { formatMinutesHHMM, formatMinutesHHMMIncludeZero } from '../../utils/timeUtils';
 
 function WeeklyGoalProgress({timeByDate, weeklyTimeGoals}) {
     const today = getTodayDate();
@@ -82,7 +82,7 @@ function WeeklyGoalProgress({timeByDate, weeklyTimeGoals}) {
                                     height="20px"
                                     fillColor={week.percent >= 100 ? "var(--green)": "var(--blue)"}
                                     backgroundColor="var(--background)"
-                                    hoverTitle={`${week.weekRange} • ${formatMinutesHHMM(week.totalTime)}`}
+                                    hoverTitle={`${week.weekRange} • ${formatMinutesHHMMIncludeZero(week.totalTime)}`}
                                 />
                                 <div className={`percent`}>
                                     {week.percent < 100 && <p>{week.percent.toFixed(0)}%</p>}

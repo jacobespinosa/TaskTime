@@ -29,6 +29,7 @@ function TaskTimeApp({ demoMode = false }) {
         startTime: null,
         elapsedSeconds: 0,
     });
+    const [selectedTask, setSelectedTask] = useState(null);
 
     const demoData = generateDemoData(DEMO_SEED);
 
@@ -386,6 +387,7 @@ function TaskTimeApp({ demoMode = false }) {
                                 handleEditSession={handleEditSession}
                                 timer={timer} setTimer={setTimer}
                                 handleAddTaskForCurrentProject={handleAddTaskForCurrentProject}
+                                selectedTask={selectedTask} setSelectedTask={setSelectedTask}
                             />
                         } 
                     />

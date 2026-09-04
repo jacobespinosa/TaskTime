@@ -13,11 +13,11 @@ import RecentSessions from '../components/dashboard/RecentSessions';
 import StreaksCard from '../components/dashboard/StreaksCard';
 import ColumnBarChart from '../components/charts/ColumnBarChart';
 
-function Dashboard({projects, setProjects, tasksByDate, setTasksByDate,
-                    timeByDate, setTimeByDate, taskActions, taskModalState,
+function Dashboard({projects, setProjects, tasksByDate, timeByDate, setTimeByDate, taskActions,
                     sessions, setSessions, currentProjectId, setCurrentProjectId,
                     setIsCreateProjectOpen, weeklyTimeGoals, setWeeklyTimeGoals,
-                    handleEditSession, timer, setTimer, handleAddTaskForCurrentProject}) {
+                    handleEditSession, timer, setTimer, handleAddTaskForCurrentProject,
+                    selectedTask, setSelectedTask}) {
 
   const {
       handleCreateTask,
@@ -35,7 +35,6 @@ function Dashboard({projects, setProjects, tasksByDate, setTasksByDate,
   const currentWeekStartDateKey = getDateKey(currentWeekStart);
   const lastWeekStartDateKey = getDateKey(lastWeekStart);
 
-  const [selectedTask, setSelectedTask] = useState(null);
   const [isWeeklyGoalModalOpen, setIsWeeklyGoalModalOpen] = useState(false);
 
   const { totalTasks, totalTasksCompleted } = getWeeklyTaskStats(tasksByDate);

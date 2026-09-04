@@ -1,2 +1,0 @@
-WeeklyGoalProgress -> ProgressBar:
-    hover shows date but if no time yet displays a leading dot divider
