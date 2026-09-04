@@ -9,3 +9,28 @@
     font-weight: bold;
     margin-left: 1rem;
 }
+
+.page-navigation-container {
+    display: flex;
+    gap: 0.7rem;
+    border: 1px solid var(--border);
+    background-color: var(--surface);
+    width: fit-content;
+    padding: 0.5rem;
+    margin-left: 1rem;
+}
+
+.page-nav-prev,
+.page-nav-next {
+    color: var(--text-primary);
+}
+
+.page-nav-prev:hover,
+.page-nav-next:hover {
+    color: black;
+}
+
+.page-nav-prev:active,
+.page-nav-next:active {
+    color: var(--blue);
+}

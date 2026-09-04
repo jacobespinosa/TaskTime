@@ -6,6 +6,4 @@ limit amount of sessions to be shown
 
 group sessions with same project into dropdown
 
-editing a session doesn't change the weekly time total
-
-add timer to tab title
+drag projects between weeks
