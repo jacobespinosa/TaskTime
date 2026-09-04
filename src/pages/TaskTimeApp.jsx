@@ -317,6 +317,34 @@ function TaskTimeApp({ demoMode = false }) {
                 : prevSession
             )          
         )
+
+        /* Updating the timeByDate for session duration change */
+        // If session update changes endTime to next day function needs to
+        // update the time of previous day session was associated with
+        const oldDateKey = getDateKey(new Date(session.endTime));
+        const newDateKey = getDateKey(new Date(edits.endTime));
+
+        if (oldDateKey === newDateKey) {
+            setTimeByDate(prevTimeByDate => ({
+                ...prevTimeByDate,
+                [newDateKey]:
+                    (prevTimeByDate[newDateKey] ?? 0)
+                    - session.durationSeconds + edits.durationSeconds
+            }))
+        }
+        else {
+            setTimeByDate(prevTimeByDate => ({
+                ...prevTimeByDate,
+
+                [oldDateKey]:
+                (prevTimeByDate[oldDateKey] ?? 0)
+                    - session.durationSeconds,
+
+                [newDateKey]:
+                (prevTimeByDate[newDateKey] ?? 0)
+                    + edits.durationSeconds
+            }))
+        }
     }
 
     const taskActions = {
