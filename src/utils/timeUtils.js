@@ -162,9 +162,11 @@ export function replaceTimestampTime(timestamp, editedTime) {
         return null;
     }
 
-    const [datePart] = timestamp.split("T");
+    const [hours, minutes] = formattedTime.split(":");
+    const date = new Date(timestamp);
+    date.setHours(hours, minutes, 0, 0);
 
-    return `${datePart}T${formattedTime}`;
+    return date.toISOString();
 }
 
 export function convertHHMMToSeconds(timeString) {

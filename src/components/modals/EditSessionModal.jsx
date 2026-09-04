@@ -1,6 +1,6 @@
 import { getTasksArray } from '../../utils/taskUtils';
 import { useState, useEffect, useRef } from 'react';
-import { convert12HourTo24Hour, convertHHMMToSeconds, formatSecondsHHMM,
+import { convertHHMMToSeconds, formatSecondsHHMM,
           formatTime12Hour, replaceTimestampTime, addDurationToTimestamp,
          getDurationSeconds } from '../../utils/timeUtils';
 import './EditSessionModal.css';
