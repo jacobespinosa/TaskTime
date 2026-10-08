@@ -7,15 +7,23 @@ import ProjectTimeBreakdown from '../components/charts/ProjectTimeBreakdown';
 import ProgressRing from '../components/charts/ProgressRing';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronLeft, faChevronRight } from '@fortawesome/free-solid-svg-icons';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import ProjectConsistency from '../components/analytics/ProjectConsistency';
 import ProjectHeatmap from '../components/analytics/ProjectHeatmap';
+import { getLocalStorage, setLocalStorage } from '../utils/localStorageUtils';
 
 function AnalyticsPage({timeByDate, weeklyTimeGoals, setWeeklyTimeGoals, tasksByDate,
                         projects, sessions, projectActivityByDate
 }) {
     const [isPieChartHovered, setIsPieChartHovered] = useState(false);
-    const [currentProjectIndex, setCurrentProjectIndex] = useState(0);
+    const currentProjectIndexDefault = 0;
+    const [currentProjectIndex, setCurrentProjectIndex] = useState(() => {
+        return getLocalStorage("currentProgressTrackedProjectId", currentProjectIndexDefault);
+    });
+
+    useEffect(() => {
+        setLocalStorage("currentProgressTrackedProjectId", currentProjectIndex);
+    }, [currentProjectIndex])
 
     const progressTrackedProjects = projects.filter(project => project.progressTracking);
     const currentProject = progressTrackedProjects[currentProjectIndex];

@@ -3,9 +3,9 @@ import { useState, useEffect, useRef } from 'react';
 import { formatSecondsHHMMSS } from '../../utils/timeUtils';
 import DropdownSelector from './DropdownSelector';
 
-function Timer({projects, setProjects, timeByDate, setTimeByDate,
+function Timer({projects, setProjects, setTimeByDate,
                 currentProjectId, setCurrentProjectId, selectedTask,
-                setSelectedTask, tasksByDate, handleAddTask,
+                setSelectedTask, tasksByDate,
                 setIsCreateProjectOpen, setSessions, timer, setTimer,
                 handleAddTaskForCurrentProject }) {
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);

@@ -25,11 +25,11 @@ function TaskTimeApp({ demoMode = false }) {
     const [newTask, setNewTask] = useState(null);
     const [isCreateProjectOpen, setIsCreateProjectOpen] = useState(false);
     const [isSessionModalOpen, setIsSessionModalOpen] = useState(false);
-    const [timer, setTimer] = useState({
+    const defaultTimer = {
         isRunning: false,
         startTime: null,
         elapsedSeconds: 0,
-    });
+    };
     const [selectedTask, setSelectedTask] = useState(null);
 
     const demoData = generateDemoData(DEMO_SEED);
@@ -44,6 +44,10 @@ function TaskTimeApp({ demoMode = false }) {
             progressTracking: null
         }
     ];
+
+    const [timer, setTimer] = useState(() => {
+        return getLocalStorage("timer", defaultTimer);
+    })
 
     const [projects, setProjects] = useState(() => {
         if (demoMode) {
@@ -95,6 +99,10 @@ function TaskTimeApp({ demoMode = false }) {
 
     const [currentProjectId, setCurrentProjectId] = useState(projects[0].id);
     const [taskModalProjectId, setTaskModalProjectId] = useState(projects[0].id);
+
+    useEffect(() => {
+        setLocalStorage("timer", timer);
+    }, [timer]);
 
     useEffect(() => {
         if (demoMode) return;

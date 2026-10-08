@@ -8,9 +8,18 @@ import { getCurrentMonthStart, getCurrentWeekStart, getCurrentYearStart, getDate
 import { calculateGoalPercentage } from '../../utils/mathUtils';
 import { getAverageMonthlyTimeGoalPercentage, getAverageYearlyTimeGoalPercentage, 
          getMonthlyTaskCompletion, getYearlyTaskCompletion, getWeeklyTaskCompletion } from '../../utils/statsUtils';
+import { getLocalStorage, setLocalStorage } from '../../utils/localStorageUtils';
 
 function SummaryCardContainer({timeByDate, weeklyTimeGoals, tasksByDate}) {
-    const [dateRangeFilter, setDateRangeFilter] = useState("This Month");
+    const dateRangeFilterDefault = "This Month";
+    const [dateRangeFilter, setDateRangeFilter] = useState(() => {
+        return getLocalStorage("summaryCardDateRangeFilter", dateRangeFilterDefault);
+    });
+
+    useEffect(() => {
+        setLocalStorage("summaryCardDateRangeFilter", dateRangeFilter);
+    }, [dateRangeFilter]);
+
     const [isDateRangeFilterOpen, setIsDateRangeFilterOpen] = useState(false);
 
     const weekStart = getCurrentWeekStart();

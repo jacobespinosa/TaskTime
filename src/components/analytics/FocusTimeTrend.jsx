@@ -1,12 +1,20 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { getDailyFocusTimeData, getMonthlyFocusTimeData, getYearlyFocusTimeData } from '../../utils/statsUtils';
 import { formatMinutesHHMMIncludeZero } from '../../utils/timeUtils';
 import './FocusTimeTrend.css';
 import ColumnBarChart from '../charts/ColumnBarChart';
 import LineChart from '../charts/LineChart';
+import { getLocalStorage, setLocalStorage } from '../../utils/localStorageUtils';
 
 function FocusTimeTrend({timeByDate}) {
-    const [dateRangeFilter, setDateRangeFilter] = useState("monthly");
+    const focusTimeTrendFilterDefault = "monthly"
+    const [focusTimeTrendFilter, setFocusTimeTrendFilter] = useState(() => {
+        return getLocalStorage("focusTimeTrendFilter", focusTimeTrendFilterDefault);
+    });
+
+    useEffect(() => {
+        setLocalStorage("focusTimeTrendFilter", focusTimeTrendFilter);
+    }, [focusTimeTrendFilter]);
 
     const dailyData = getDailyFocusTimeData(timeByDate);
     const sortedDailyDataByTime = dailyData.toSorted((a, b) => b.time - a.time);
@@ -40,28 +48,28 @@ function FocusTimeTrend({timeByDate}) {
                 </h4>
                 <div className="date-range-filter-options">
                     <button type='button'
-                            className={`${dateRangeFilter === "daily" ? "active" : ""}`}
-                            onClick={() => setDateRangeFilter("daily")}        
+                            className={`${focusTimeTrendFilter === "daily" ? "active" : ""}`}
+                            onClick={() => setFocusTimeTrendFilter("daily")}        
                     >
                         daily
                     </button>
                     <div className='divider-vertical'></div>
                     <button type='button'
-                            className={`${dateRangeFilter === "monthly" ? "active" : ""}`}
-                            onClick={() => setDateRangeFilter("monthly")}         
+                            className={`${focusTimeTrendFilter === "monthly" ? "active" : ""}`}
+                            onClick={() => setFocusTimeTrendFilter("monthly")}         
                     >
                         monthly
                     </button>
                     <div className='divider-vertical'></div>
                     <button type='button'
-                            className={`${dateRangeFilter === "yearly" ? "active" : ""}`}
-                            onClick={() => setDateRangeFilter("yearly")}         
+                            className={`${focusTimeTrendFilter === "yearly" ? "active" : ""}`}
+                            onClick={() => setFocusTimeTrendFilter("yearly")}         
                     >
                         yearly
                     </button>
                 </div>
             </header>
-            {dateRangeFilter === "daily" &&
+            {focusTimeTrendFilter === "daily" &&
                 <div className='daily-focus-time-trend'>
                     <ColumnBarChart 
                             title={""}
@@ -77,7 +85,7 @@ function FocusTimeTrend({timeByDate}) {
                     />
                 </div>
             }
-            {dateRangeFilter === "monthly" &&
+            {focusTimeTrendFilter === "monthly" &&
                 <div className='monthly-focus-time-trend'>
                     <LineChart 
                         title={""}
@@ -90,7 +98,7 @@ function FocusTimeTrend({timeByDate}) {
                     />
                 </div>
             }
-            {dateRangeFilter === "yearly" &&
+            {focusTimeTrendFilter === "yearly" &&
                 <div className='yearly-focus-time-trend'>
                     <LineChart
                         title={""}
