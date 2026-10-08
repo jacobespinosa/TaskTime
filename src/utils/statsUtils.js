@@ -192,6 +192,7 @@ export function getDailyFocusTimeData(timeByDate) {
 
 /* Return Array of data objects { weekStart, time, month } */
 export function getMonthlyFocusTimeData(timeByDate) {
+    const today = new Date();
     const currentMonthStart = getCurrentMonthStart();
 
     const monthStart = new Date(
@@ -219,8 +220,8 @@ export function getMonthlyFocusTimeData(timeByDate) {
         const weekEnd = new Date(currentWeek);
         weekEnd.setDate(weekEnd.getDate() + 6);
 
-        // Skip week if it ends in month after the end month
-        if (weekEnd > monthEnd) {
+        // Skip week if it ends in month after the end month or week isn't complete yet
+        if (weekEnd > monthEnd || weekEnd > today) {
             break;
         }
 
