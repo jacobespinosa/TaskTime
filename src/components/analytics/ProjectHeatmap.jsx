@@ -3,13 +3,21 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronDown, faChevronUp, faChevronLeft, faChevronRight } from '@fortawesome/free-solid-svg-icons';
 import { useState, useEffect, useRef } from 'react';
 import YearlyHeatmap from '../charts/YearlyHeatmap';
+import { getLocalStorage, setLocalStorage } from '../../utils/localStorageUtils';
 
 function ProjectHeatmap({projects, sessions}) {
     const today = new Date();
 
     const [ currentYear, setCurrentYear ] = useState(today.getFullYear());
     const [ isProjectFilterOpen, setIsProjectFilterOpen ] = useState(false);
-    const [ currentProject, setCurrentProject ] = useState(projects[0]);
+    const currentProjectDefault = projects[0];
+    const [ currentProject, setCurrentProject ] = useState(() => {
+        return getLocalStorage("projectHeatmapCurrentProject", currentProjectDefault);
+    });
+
+    useEffect(() => {
+        setLocalStorage("projectHeatmapCurrentProject", currentProject);
+    }, [currentProject]);
 
     function handlePrevYear() {
         setCurrentYear(prev => prev - 1);

@@ -4,9 +4,18 @@ import { faChevronDown, faChevronUp, faChevronLeft, faChevronRight } from '@fort
 import { useState, useEffect, useRef } from 'react';
 import { getProjectTasks } from '../../utils/taskUtils';
 import { getDateKey } from '../../utils/dateUtils';
+import { getLocalStorage, setLocalStorage } from '../../utils/localStorageUtils';
 
-function ProjectConsistency({projects, tasksByDate, projectActivityByDate}) {
-    const [ currentProject, setCurrentProject ] = useState(projects[1]);
+function ProjectConsistency({projects, projectActivityByDate}) {
+    const currentProjectDefault = projects[1];
+    const [ currentProject, setCurrentProject ] = useState(() => {
+        return getLocalStorage("projectConsistencyCurrentProject", currentProjectDefault);
+    });
+
+    useEffect(() => {
+        setLocalStorage("projectConsistencyCurrentProject", currentProject)
+    }, [currentProject]);
+
     const [ isProjectFilterOpen, setIsProjectFilterOpen ] = useState(false);
 
     const today = new Date();

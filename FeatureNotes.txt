@@ -1,8 +1,4 @@
-import/ export data buttons
-
 accounts for data sync
-
-limit amount of sessions to be shown
 
 group sessions with same project into dropdown
 
