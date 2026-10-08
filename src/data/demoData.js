@@ -327,6 +327,8 @@ export function generateDemoTasks(random, daysBack = 180) {
                 continue;
             }
 
+            const isCompletedByDate = random() < .9;
+
             tasks.push({
                 id: taskId++,
                 name: getRandomItem(random, projectTaskNames[projectId]),
@@ -334,7 +336,7 @@ export function generateDemoTasks(random, daysBack = 180) {
                 time: getRandomItem(random, [30, 45, 60, 90, 120]),
                 isDone,
                 dueDate: date.toISOString().split("T")[0],
-                dateCompleted: isDone
+                dateCompleted: isCompletedByDate
                     ? getDateKey(date)
                     : ""
             });
@@ -350,8 +352,9 @@ export function generateDemoTasks(random, daysBack = 180) {
     return tasksByDate;
 }
 
-export function generateDemoSessions(random, daysBack = 120) {
+export function generateDemoSessions(random, tasksByDate, daysBack = 120) {
     const sessions = [];
+    const allTasks = Object.values(tasksByDate).flat();
 
     const today = new Date();
     today.setHours(0, 0, 0, 0);
@@ -377,6 +380,14 @@ export function generateDemoSessions(random, daysBack = 120) {
         for (let j = 0; j < sessionCount; j++) {
             const projectId = getRandomInt(random, 0, 3);
 
+            const matchingTasks = allTasks.filter(
+                task => task.projectId === projectId
+            );
+
+            const selectedTask = matchingTasks.length > 0
+                ? getRandomItem(random, matchingTasks)
+                : null;
+
             const durationMinutes = getRandomInt(random, 25, 120);
             const durationSeconds = durationMinutes * 60;
 
@@ -393,7 +404,7 @@ export function generateDemoSessions(random, daysBack = 120) {
             sessions.push({
                 id: sessionId++,
                 projectId,
-                taskId: null,
+                taskId: selectedTask?.id ?? null,
                 startTime: startTime.toISOString(),
                 endTime: endTime.toISOString(),
                 durationSeconds,
@@ -486,21 +497,22 @@ export function generateDemoWeeklyGoals(random, weeksBack = 16) {
 export function generateDemoData(seed = 12345) {
     const random = createSeededRandom(seed);
 
-    const sessions = generateDemoSessions(
-        random,
-        180
-    );
-
     let projects = generateDemoProjects();
-
-    projects = addProjectTimeSpent(
-        projects,
-        sessions
-    );
 
     const tasksByDate = generateDemoTasks(
         random,
         180
+    );
+
+    const sessions = generateDemoSessions(
+        random,
+        tasksByDate,
+        180
+    );
+
+    projects = addProjectTimeSpent(
+        projects,
+        sessions
     );
 
     const timeByDate =

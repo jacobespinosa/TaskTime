@@ -1,4 +1,4 @@
-import { getTodayDate, getDateKey } from "./dateUtils";
+import { getTodayDate, getDateKey, formatISOMMDDYYYY } from "./dateUtils";
 
 /* returns object { currentStreak, longestStreak } */
 export function getTaskCompletionStreaks(tasksByDate) {
@@ -13,7 +13,6 @@ export function getTaskCompletionStreaks(tasksByDate) {
 
 
     const sortedDateKeys = dateKeys.toSorted((a, b) => new Date(a) - new Date(b));
-
     const currentDate = new Date(sortedDateKeys[0]);
     const today = getTodayDate();
 
@@ -26,7 +25,7 @@ export function getTaskCompletionStreaks(tasksByDate) {
 
         if (tasks?.length > 0)
         {
-            if (tasks.every(task => task.isDone && task.dateCompleted === currentDate.toISOString())) {
+            if (tasks.every(task => task.isDone && task.dateCompleted === formatISOMMDDYYYY(currentDate.toISOString().split('T')[0]))) {
                 streak++;
                 longestStreak = Math.max(longestStreak, streak);
             }
