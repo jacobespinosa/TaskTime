@@ -1,13 +1,14 @@
 .calendar {
-    height: calc(100vh - 4rem);
+    height: 100%;
+    min-height: 0;
 }
 
 .calendar-content {
     height: 100%;
     display: grid;
     gap: 1.5rem;
-    grid-template-columns: auto 1fr;
-    grid-template-rows: auto 1fr 1.5fr;
+    grid-template-columns: auto minmax(0, 1fr);
+    grid-template-rows: auto minmax(0, 1fr) minmax(0, 1.5fr);
     grid-template-areas: 
         'calendarHeader calendarHeader'
         'estimatedWorkload taskList'
@@ -23,6 +24,10 @@
     margin-left: 5rem;
 }
 
+.estimated-workload .column-bar-chart-container {
+    padding-top: 0rem;
+}
+
 .task-list-section {
     grid-area: taskList;
     display: flex;
@@ -34,9 +39,3 @@
 .week-calendar {
     grid-area: weekCalendar;
 }
-
-/*
-.mini-calendar,
-.week-calendar {
-    border: 1px solid black;
-} */

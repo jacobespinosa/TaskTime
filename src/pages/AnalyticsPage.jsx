@@ -97,7 +97,7 @@ function AnalyticsPage({timeByDate, weeklyTimeGoals, setWeeklyTimeGoals, tasksBy
                                     projects={projects}
                                     sessions={sessions}
                                     timeByDate={timeByDate}
-                                    width="300px"
+                                    width="285px"
                                     setIsPieChartHovered={setIsPieChartHovered}
                                 />
                                 {isPieChartHovered &&
@@ -123,7 +123,7 @@ function AnalyticsPage({timeByDate, weeklyTimeGoals, setWeeklyTimeGoals, tasksBy
                                         title={`${currentProject?.name ?? "No"} Progress`}
                                         type="number"
                                         onClick={""}
-                                        width={"300px"}
+                                        width={"285px"}
                                         unit={unit}
                                     />
                                     <button

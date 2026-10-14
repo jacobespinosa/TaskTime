@@ -1,1 +1,2 @@
-monthly focus chart includes data past today so the chart tanks for future
+long project names need to be shorted on progress ring
+progress ring still shows archived projects

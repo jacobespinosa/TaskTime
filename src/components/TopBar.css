@@ -1,0 +1,45 @@
+.topbar {
+    border: 1px solid var(--border);
+    background-color: var(--surface);
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    border-right: none;
+}
+
+.topbar-actions {
+    margin: 0.7rem 2rem 0.7rem 0;
+}
+
+.sign-in-button {
+    border: 1px solid none;
+    padding: .5rem 1rem;
+    border-radius: 10px;
+    background-color: var(--blue);
+    color: var(--surface);
+    text-align: center;
+    height: 34px;
+    transition: background-color 0.2s ease;
+
+}
+
+.sign-in-button:hover {
+    background-color: color-mix(in srgb, var(--blue) 80%, black);
+}
+
+.profile-button {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0rem 1rem;
+    border: none;
+    height: 34px;
+}
+
+.profile-picture {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    object-fit: cover;
+    flex-shrink: 0;
+}

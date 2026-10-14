@@ -1,13 +1,27 @@
 .app-layout {
     display: grid;
     grid-template-columns: auto 1fr;
+    grid-template-rows: auto 1fr;
+    grid-template-areas:
+        "sidebar topbar"
+        "sidebar content";
     height: 100vh;
     overflow: hidden;
 }
 
+.sidebar {
+    grid-area: sidebar;
+}
+
+.topbar {
+    grid-area: topbar;
+}
+
 .page-content {
+    grid-area: content;
     padding: 2rem;
     min-height: 0;
     background-color: var(--background);
     overflow-y: auto;
 }
+
