@@ -414,7 +414,7 @@ function TaskTimeApp({ demoMode = false }) {
                             <CalendarPage 
                                 tasksByDate={tasksByDate}
                                 taskActions={taskActions}
-                                taskModalState={taskModalState}
+                                projects={projects}
                             />
                         } 
                     />

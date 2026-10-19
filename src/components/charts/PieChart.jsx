@@ -1,23 +1,21 @@
 import './PieChart.css';
-import { getWeeklyProjectStats } from '../../utils/projectUtils';
-import { formatMinutesHHMMIncludeZero } from '../../utils/timeUtils';
 
-function PieChart({title, projects, sessions, width, setIsPieChartHovered}) {
-    const projectStats = getWeeklyProjectStats(projects, sessions);
-    const sortedProjectStats = projectStats.toSorted((a, b) => b.time - a.time);
-    const totalWeeklyTime = sortedProjectStats.reduce(
-        (total, { time }) => total + time,
+function PieChart({title, data, width, formatValue, onHoverChange}) {
+    const sortedData = data.toSorted((a, b) => b.value - a.value);
+    const total = sortedData.reduce(
+        (sum, { value }) => sum + value,
         0
     );
 
     let start = 0;
-    const pieGradient = totalWeeklyTime <= 0
-        ? "var(--shadow)"
-        : `conic-gradient(${sortedProjectStats
-            .map(({ project, time }) => {
-                const percent = (time / totalWeeklyTime) * 100;
 
-                const slice = `${project.color} ${start}% ${start + percent}%`;
+    const pieGradient = total <= 0
+        ? "var(--shadow)"
+        : `conic-gradient(${sortedData
+            .map(({ color, value }) => {
+                const percent = (value / total) * 100;
+
+                const slice = `${color} ${start}% ${start + percent}%`;
 
                 start += percent;
 
@@ -33,14 +31,14 @@ function PieChart({title, projects, sessions, width, setIsPieChartHovered}) {
                     background: pieGradient,
                     width
                 }}
-                onMouseEnter={() => setIsPieChartHovered(true)}
-                onMouseLeave={() => setIsPieChartHovered(false)}
+                onMouseEnter={() => onHoverChange?.(true)}
+                onMouseLeave={() => onHoverChange?.(false)}
             >
                 <div className='pie-chart-center'
-                     onMouseEnter={() => setIsPieChartHovered(false)}
-                     onMouseLeave={() => setIsPieChartHovered(true)}
+                     onMouseEnter={() => onHoverChange?.(false)}
+                     onMouseLeave={() => onHoverChange?.(true)}
                 >
-                    {formatMinutesHHMMIncludeZero(totalWeeklyTime)}
+                    {formatValue(total)}
                 </div>
             </div>
         </div>

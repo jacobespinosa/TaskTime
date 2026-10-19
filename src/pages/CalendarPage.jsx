@@ -6,11 +6,14 @@ import WeeklyCalendar from "../components/calendar/WeeklyCalendar";
 import CalendarHeader from '../components/calendar/CalendarHeader';
 import ColumnBarChart from '../components/charts/ColumnBarChart';
 import TaskListSection from '../components/calendar/TaskListSection';
+import PieChart from '../components/charts/PieChart';
+import ProjectTimeBreakdown from '../components/charts/ProjectTimeBreakdown';
 import { getOverdueTasks, getDueSoonTasks, getTaskDueDateText } from '../utils/taskUtils';
 import { formatMinutesHHMMIncludeZero } from '../utils/timeUtils';
 
-function CalendarPage({tasksByDate, taskActions}) {
+function CalendarPage({tasksByDate, taskActions, projects}) {
     const [ visibleWeekStart, setVisibleWeekStart ] = useState(getCurrentWeekStart());
+    const [ isPieChartHovered, setIsPieChartHovered ] = useState(false)
 
     const {
         handleCreateTask,
@@ -20,6 +23,38 @@ function CalendarPage({tasksByDate, taskActions}) {
         handleAddTask,
         handleEditTask
     } = taskActions;
+
+    const weeklyTasks = Array.from({ length: 7 }, (_, index) => {
+        const date = new Date(visibleWeekStart);
+        date.setDate(date.getDate() + index);
+
+        const dateKey = getDateKey(date);
+        return tasksByDate[dateKey] ?? [];
+    }).flat();
+
+    const projectData = projects
+        .map(project => {
+            const totalEstimatedTime = weeklyTasks
+                .filter(task => task.projectId === project.id)
+                .reduce((total, task) => total + task.time, 0);
+
+            return {
+                label: project.name,
+                value: totalEstimatedTime,
+                color: project.color
+            };
+    }).filter(project => project.value > 0);
+
+    const projectBreakdownData = projects
+        .map(project => {
+            const totalEstimatedTime = weeklyTasks
+                .filter(task => task.projectId === project.id)
+                .reduce((total, task) => total + task.time, 0);
+            return {
+                project: project,
+                time: totalEstimatedTime,
+            };
+    }).filter(project => project.time > 0);
 
     const estimatedWorkloadData = Array.from({length: 7}, (_, index) => {
         const date = new Date(visibleWeekStart);
@@ -62,6 +97,22 @@ function CalendarPage({tasksByDate, taskActions}) {
                         columnWidth={"60px"}
                         columnGap={"2rem"}
                     />
+                </div>
+                <div className='estimated-project-hours'>
+                    <PieChart 
+                        title={"Estimated Project Hours"}
+                        data={projectData}
+                        width={"250px"}
+                        formatValue={formatMinutesHHMMIncludeZero}
+                        onHoverChange={setIsPieChartHovered}
+                    />
+                    {isPieChartHovered && 
+                        <div className='estimated-project-hours-hover-container'>
+                            <ProjectTimeBreakdown 
+                                projectData={projectBreakdownData}
+                            />
+                        </div>
+                    }
                 </div>
                 <div className='task-list-section'>
                     <TaskListSection 

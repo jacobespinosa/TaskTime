@@ -1,0 +1,42 @@
+TaskByDate:
+
+const tasksByDate = {
+    "7/13/2026": [
+        {
+            id: 1,
+            name: "Study React",
+            projectId: 0,
+            time: 90,
+            isDone: false,
+            dueDate: "2026-07-13"
+        },
+        {
+            id: 2,
+            name: "LeetCode",
+            projectId: 1,
+            time: 60,
+            isDone: false,
+            dueDate: "2026-07-13"
+        }
+    ],
+    "7/14/2026": [
+        {
+            id: 3,
+            name: "Work on Dashboard",
+            projectId: 1,
+            time: 120,
+            isDone: true,
+            dueDate: "2026-07-15"
+        }
+    ]
+};
+
+Task properties
+Property	    Type	            Description
+id	            Number	            Unique task identifier
+name	        String	            Task name
+projectId	    Number/null	        Associated project
+time	        Number	            Estimated duration in minutes
+isDone	        Boolean	            Whether the task is completed
+dueDate	        String	            Task deadline (YYYY-MM-DD)
+dateCompleted	String (optional)	Date the task was completed
