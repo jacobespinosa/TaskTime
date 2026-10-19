@@ -2,9 +2,8 @@ import './ProjectTimeBreakdown.css';
 import { getWeeklyProjectStats } from '../../utils/projectUtils';
 import { formatMinutesHHMMIncludeZero, getWeeklyTotalTime } from '../../utils/timeUtils';
 
-function ProjectTimeBreakdown({ projects, sessions }) {
-    const projectStats = getWeeklyProjectStats(projects, sessions);
-    let sortedProjectStats = projectStats.toSorted((a, b) => b.time - a.time);
+function ProjectTimeBreakdown({ projectData }) {
+    let sortedProjectStats = projectData.toSorted((a, b) => b.time - a.time);
     const mostTimeSpent = sortedProjectStats[0]?.time ?? 0;
     const totalWeeklyTime = sortedProjectStats.reduce(
         (total, { time }) => total + time,

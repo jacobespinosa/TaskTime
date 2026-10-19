@@ -11,8 +11,10 @@ import { useEffect, useState } from 'react';
 import ProjectConsistency from '../components/analytics/ProjectConsistency';
 import ProjectHeatmap from '../components/analytics/ProjectHeatmap';
 import { getLocalStorage, setLocalStorage } from '../utils/localStorageUtils';
+import { formatMinutesHHMMIncludeZero } from '../utils/timeUtils';
+import { getWeeklyProjectStats } from '../utils/projectUtils';
 
-function AnalyticsPage({timeByDate, weeklyTimeGoals, setWeeklyTimeGoals, tasksByDate,
+function AnalyticsPage({timeByDate, weeklyTimeGoals, tasksByDate,
                         projects, sessions, projectActivityByDate
 }) {
     const [isPieChartHovered, setIsPieChartHovered] = useState(false);
@@ -32,6 +34,14 @@ function AnalyticsPage({timeByDate, weeklyTimeGoals, setWeeklyTimeGoals, tasksBy
         goalValue = 0,
         unit = "No Unit"
     } = currentProject?.progressTracking ?? {};
+
+    const projectStats = getWeeklyProjectStats(projects, sessions);
+    const projectData = projectStats.map(({ project, time }) => ({
+        label: project.name,
+        value: time,
+        color: project.color
+    }));
+    const projectBreakdownData = getWeeklyProjectStats(projects, sessions);
 
     function handlePreviousProject() {
         setCurrentProjectIndex(currentIndex =>
@@ -94,17 +104,15 @@ function AnalyticsPage({timeByDate, weeklyTimeGoals, setWeeklyTimeGoals, tasksBy
                             <div className='pie-chart-area'>
                                 <PieChart 
                                     title="Project Breakdown"
-                                    projects={projects}
-                                    sessions={sessions}
-                                    timeByDate={timeByDate}
+                                    data={projectData}
                                     width="300px"
-                                    setIsPieChartHovered={setIsPieChartHovered}
+                                    formatValue={formatMinutesHHMMIncludeZero}
+                                    onHoverChange={setIsPieChartHovered}
                                 />
                                 {isPieChartHovered &&
                                     <div className='project-breakdown-hover-container'>
                                         <ProjectTimeBreakdown 
-                                            projects={projects}
-                                            sessions={sessions}
+                                            projectData={projectBreakdownData}
                                         />
                                     </div>
                                 }

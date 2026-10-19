@@ -6,12 +6,12 @@
     height: 100%;
     display: grid;
     gap: 1.5rem;
-    grid-template-columns: auto 1fr;
+    grid-template-columns: auto 1fr 1.7fr;
     grid-template-rows: auto 1fr 1.5fr;
     grid-template-areas: 
-        'calendarHeader calendarHeader'
-        'estimatedWorkload taskList'
-        'weekCalendar weekCalendar';
+        'calendarHeader calendarHeader calendarHeader'
+        'estimatedWorkload estimatedHours taskList'
+        'weekCalendar weekCalendar weekCalendar';
 }
 
 .calendar-header {
@@ -23,20 +23,33 @@
     margin-left: 5rem;
 }
 
+.estimated-project-hours {
+    grid-area: estimatedHours;
+    margin-left: 0.8rem;
+    position: relative;
+}
+
+.estimated-project-hours .pie-chart-container .pie-chart-title {
+    margin-top: 1rem;
+}
+
+.estimated-project-hours-hover-container {
+    position: absolute;
+    width: 550px;
+    left: 275px;
+    top: 0px;
+    background-color: var(--surface);
+    box-shadow: 1px 1px 8px var(--shadow);
+    z-index: 999;
+}
+
 .task-list-section {
     grid-area: taskList;
     display: flex;
     justify-content: space-evenly;
     align-items: center;
-    margin-left: 8rem;
 }
 
 .week-calendar {
     grid-area: weekCalendar;
 }
-
-/*
-.mini-calendar,
-.week-calendar {
-    border: 1px solid black;
-} */
