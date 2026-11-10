@@ -1,5 +1,0 @@
-accounts for data sync
-
-group sessions with same project into dropdown
-
-drag projects between weeks
